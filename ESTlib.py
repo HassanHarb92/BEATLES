@@ -138,8 +138,8 @@ def GetAtoms(filename1,NAtoms):
 # MatGrab: Reads in filename, NBasis, user-defined switch
 # Output: -Alpha MO Coefficients (Done)
 #         -Beta MO Coefficients (Done)
-#         -Alpha Density Matrix
-#         -Beta Density Matrix
+#         -Alpha Density Matrix (Done)
+#         -Beta Density Matrix (Done)
 #         -Alpha MO Energies
 #         -Beta MO Energies
 #
@@ -210,6 +210,50 @@ def MatGrab(filename,NBasis,switch):
          print "MO Raw = ", MOrawb
          return MOrawb, BMO
 
+#### HH: Needs fixing, snippet is not reading data from fchk ####
+
+   if (switch == 2):
+      filename1 = filename
+      PElements = int(NBasis*(NBasis+1)/2)
+      Plines = int(PElements/5) + 1
+      TotalPraw = np.zeros(PElements)
+      SpinPraw = np.zeros(PElements)
+      with open(filename1,'r') as origin:
+       for i, line in enumerate(origin):
+        if  "Total SCF Density" in line:
+              i=i+1
+              r = 0
+              p = 0
+              print "Total SCF Density starts at line :", i
+              j=i+Plines-1
+              print "Total SCF Density ends at line :", j
+              for m in range(0,j-i+1):
+                 nextline = origin.next()
+                 nextline = nextline.split()
+                 for p in range(p,len(nextline)):
+                   TotalPraw[r] = nextline[p]
+                   r = r+1
+                 p = 0
+        if  "Spin SCF Density" in line:
+              i=i+1
+              r = 0
+              p = 0
+              print "Spin SCF Density starts at line: ", i
+              j=i+Plines-1
+              print "Spin SCF Density ends at line: ", j
+              for m in range(0,j-i+1):
+                 nextline = origin.next()
+                 nextline = nextline.split()
+                 for p in range(p,len(nextline)):
+                   SpinPraw[r] = nextline[p]
+                   r = r+1
+                 p = 0
+       PalphaRaw = (np.add(TotalPraw,SpinPraw)) * 0.5
+       PbetaRaw = (np.subtract(TotalPraw,SpinPraw)) * 0.5
+       Palpha = symmetrize(PalphaRaw)
+       Pbeta  = symmetrize(PbetaRaw)       
+       return Palpha, Pbeta
+#### HH: end of bad snippet ##
 
 # sci_notation:  reads in a number
 # output:        prints the number in the desired scientific notation. note that this function has a different output than the one found in nio.py
