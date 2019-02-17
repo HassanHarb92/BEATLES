@@ -145,6 +145,9 @@ def GetAtoms(filename1,NAtoms):
 #
 # Switch: 1 = Alpha MO Coefficients
 #        -1 = Beta MO Coefficients
+#         2 = Alpha and Beta Density Matrices
+#         3 = Alpha MO Energies
+#        -3 = Beta MO Energies
 #
 def MatGrab(filename,NBasis,switch):
    if (switch == 1):
