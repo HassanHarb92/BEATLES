@@ -378,8 +378,3 @@ def CalcNO(filename,NBasis):
        print "Beta MO Eigenvectors  =\n", NOvecsB
        print "Beta MO Eigenvalues   =\n", NOvalsB
 
-
-
-
-
-
