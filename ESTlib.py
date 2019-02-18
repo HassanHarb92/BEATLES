@@ -359,4 +359,27 @@ def PrintSI(filename1,switch):
           print Atom, sci_notation(Cart[i,0]), sci_notation(Cart[i,1]), sci_notation(Cart[i,2])
       print "\n"    
       
+# CalcNO: Reads in filename, NBasis
+# Output: Natural Orbitals eigenvalues and eigenvectors (both alpha and beta)
+# 
+
+def CalcNO(filename,NBasis):
+       Palpha, Pbeta = MatGrab(filename,NBasis,2)   
+       C, a = MatGrab(filename,NBasis,1)
+       S = GetOverlap(C,NBasis)
+       Svals, Svecs = np.linalg.eig(S)
+       Sval_minhalf = (np.diag(Svals**(0.5)))
+       Shalf = np.dot(Svecs,np.dot(Sval_minhalf,np.transpose(Svecs)))
+       NOvalsA, NOvecsA = np.linalg.eig(np.dot(Shalf,np.dot(Shalf,Palpha)))
+       NOvalsB, NOvecsB = np.linalg.eig(np.dot(Shalf,np.dot(Shalf,Pbeta))) 
+
+       print "Alpha NO Eigenvectors =\n", NOvecsA
+       print "Alpha NO Eigenvalues  =\n", NOvalsA
+       print "Beta MO Eigenvectors  =\n", NOvecsB
+       print "Beta MO Eigenvalues   =\n", NOvalsB
+
+
+
+
+
 
