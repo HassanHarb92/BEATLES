@@ -210,8 +210,6 @@ def MatGrab(filename,NBasis,switch):
          print "MO Raw = ", MOrawb
          return MOrawb, BMO
 
-#### HH: Needs fixing, snippet is not reading data from fchk ####
-
    if (switch == 2):
       filename1 = filename
       PElements = int(NBasis*(NBasis+1)/2)
@@ -253,7 +251,6 @@ def MatGrab(filename,NBasis,switch):
        Palpha = symmetrize(PalphaRaw)
        Pbeta  = symmetrize(PbetaRaw)       
        return Palpha, Pbeta
-#### HH: end of bad snippet ##
 
 # sci_notation:  reads in a number
 # output:        prints the number in the desired scientific notation. note that this function has a different output than the one found in nio.py
@@ -377,4 +374,9 @@ def CalcNO(filename,NBasis):
        print "Alpha NO Eigenvalues  =\n", NOvalsA
        print "Beta MO Eigenvectors  =\n", NOvecsB
        print "Beta MO Eigenvalues   =\n", NOvalsB
+
+
+
+
+
 
