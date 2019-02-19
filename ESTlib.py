@@ -133,15 +133,13 @@ def GetAtoms(filename1,NAtoms):
                 p = 0
    return AtomicNum
 
-# INCOMPLETE 
-#
 # MatGrab: Reads in filename, NBasis, user-defined switch
 # Output: -Alpha MO Coefficients (Done)
 #         -Beta MO Coefficients (Done)
 #         -Alpha Density Matrix (Done)
 #         -Beta Density Matrix (Done)
-#         -Alpha MO Energies
-#         -Beta MO Energies
+#         -Alpha MO Energies (Done)
+#         -Beta MO Energies (Done)
 #
 # Switch: 1 = Alpha MO Coefficients
 #        -1 = Beta MO Coefficients
@@ -251,6 +249,56 @@ def MatGrab(filename,NBasis,switch):
        Palpha = symmetrize(PalphaRaw)
        Pbeta  = symmetrize(PbetaRaw)       
        return Palpha, Pbeta
+
+   if (switch == 3):
+      filename1 = filename
+      AlphaMO = np.zeros(NBasis)
+      AlphaMOlines = int(NBasis/5) + 1
+      if (NBasis % 5 == 0):
+         AlphaMOlines = AlphaMOlines - 1
+      with open(filename1,'r') as origin:
+         for i, line in enumerate(origin):
+             if "Alpha Orbital Energies" in line:
+                i = i + 1
+                r = 0
+                p = 0
+                print "Alpha MO Energies starts at line: ", i
+                j = i + AlphaMOlines - 1
+                print "Alpha MO Energies ends at line: ", j
+                for m in range(0,j-i+1):
+                    nextline = origin.next()
+                    nextline = nextline.split()
+                    for p in range(p,len(nextline)):
+                        AlphaMO[r] = nextline[p]
+                        r = r + 1
+                    p = 0
+      print "Alpha MO energies = ", AlphaMO
+      return AlphaMO
+
+   if (switch == -3):
+      filename1 = filename
+      BetaMO = np.zeros(NBasis)
+      BetaMOlines = int(NBasis/5) + 1
+      if (NBasis % 5 == 0):
+         BetaMOlines = BetaMOlines - 1
+      with open(filename1,'r') as origin:
+         for i, line in enumerate(origin):
+             if "Beta Orbital Energies" in line:
+                i = i + 1
+                r = 0
+                p = 0
+                print "Beta MO Energies starts at line: ", i
+                j = i + BetaMOlines - 1
+                print "Beta MO Energies ends at line: ", j
+                for m in range(0,j-i+1):
+                    nextline = origin.next()
+                    nextline = nextline.split()
+                    for p in range(p,len(nextline)):
+                        BetaMO[r] = nextline[p]
+                        r = r + 1
+                    p = 0
+      print "Beta MO energies = ", BetaMO
+      return BetaMO
 
 # sci_notation:  reads in a number
 # output:        prints the number in the desired scientific notation. note that this function has a different output than the one found in nio.py
@@ -374,9 +422,4 @@ def CalcNO(filename,NBasis):
        print "Alpha NO Eigenvalues  =\n", NOvalsA
        print "Beta MO Eigenvectors  =\n", NOvecsB
        print "Beta MO Eigenvalues   =\n", NOvalsB
-
-
-
-
-
 
