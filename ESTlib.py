@@ -417,9 +417,12 @@ def CalcNO(filename,NBasis):
        Shalf = np.dot(Svecs,np.dot(Sval_minhalf,np.transpose(Svecs)))
        NOvalsA, NOvecsA = np.linalg.eig(np.dot(Shalf,np.dot(Shalf,Palpha)))
        NOvalsB, NOvecsB = np.linalg.eig(np.dot(Shalf,np.dot(Shalf,Pbeta))) 
-
-       print "Alpha NO Eigenvectors =\n", NOvecsA
-       print "Alpha NO Eigenvalues  =\n", NOvalsA
-       print "Beta MO Eigenvectors  =\n", NOvecsB
-       print "Beta MO Eigenvalues   =\n", NOvalsB
+       NOvalsA = NOvalsA.real
+       NOvalsB = NOvalsB.real 
+       NOvecsA = NOvecsA.real
+       NOvecsB = NOvecsB.real
+       print "Alpha Natural Orbitals Eigenvectors =\n", NOvecsA
+       print "Alpha Natural Orbitals Eigenvalues  =\n", NOvalsA
+       print "Beta  Natural Orbitals Eigenvectors  =\n", NOvecsB
+       print "Beta  Natural Orbitals Eigenvalues   =\n", NOvalsB
 
