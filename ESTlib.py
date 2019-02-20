@@ -426,3 +426,34 @@ def CalcNO(filename,NBasis):
        print "Beta  Natural Orbitals Eigenvectors  =\n", NOvecsB
        print "Beta  Natural Orbitals Eigenvalues   =\n", NOvalsB
 
+# NElec: Reads in filename
+# Output: Total number of electrons, Alpha Electrons, Beta Electrons
+#
+
+def NElec(filename):
+  NElec = 0
+  NAlpha = 0
+  NBeta = 0
+  with open(filename, 'r') as origin:
+     for line in origin:
+        if "Number of electrons" in line:
+           words = line.split()
+           for i in words:
+              for letter in i:
+                 if(letter.isdigit()):
+                    NElec = NElec*10 + int(letter)
+        if "Number of alpha electrons" in line:
+           words = line.split()
+           for i in words:
+              for letter in i:
+                 if(letter.isdigit()):
+                    NAlpha = NAlpha*10 + int(letter)
+        if "Number of beta electrons" in line:
+           words = line.split()
+           for i in words:
+              for letter in i:
+                 if(letter.isdigit()):
+                    NBeta = NBeta*10 + int(letter)
+  return NElec, NAlpha, NBeta
+
+   
