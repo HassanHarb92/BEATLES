@@ -425,6 +425,7 @@ def CalcNO(filename,NBasis):
        print "Alpha Natural Orbitals Eigenvalues  =\n", NOvalsA
        print "Beta  Natural Orbitals Eigenvectors  =\n", NOvecsB
        print "Beta  Natural Orbitals Eigenvalues   =\n", NOvalsB
+       return NOvecsA, NOvecsB, NOvalsA, NOvalsB
 
 # NElec: Reads in filename
 # Output: Total number of electrons, Alpha Electrons, Beta Electrons
@@ -456,4 +457,25 @@ def NElec(filename):
                     NBeta = NBeta*10 + int(letter)
   return NElec, NAlpha, NBeta
 
-   
+# OrbTransform: Reads in Alpha Density Matrix, Beta Density Matrix, Overlap Matrix, n
+# Output: New Density Matrices: P' = S**(1-n).P.S**(n)
+#
+
+def OrbTransform(Pa,Pb,S,n):
+       Svals, Svecs = np.linalg.eig(S)
+       Sval1 = np.diag(Svals**(n))
+       Sval2 = np.diag(Svals**(1-n)) 
+       Sdag1 = np.dot(Svecs,np.dot(Sval1,np.transpose(Svecs)))
+       Sdag2 = np.dot(Svecs,np.dot(Sval2,np.transpose(Svecs)))
+       PdagAlpha = np.dot(Sdag1,np.dot(Pa,Sdag2))
+       PdagBeta = np.dot(Sdag1,np.dot(Pb,Sdag2))
+       print "OrbTransform Subroutine test:\n"
+       print "PdagAlpha = ", PdagAlpha, "\n"
+       print "PdagBeta = ", PdagBeta, "\n"
+       NOvalsA, NOvecsA = np.linalg.eig(PdagAlpha)
+       NOvalsB, NOvecsB = np.linalg.eig(PdagBeta) 
+       print "NOVals A = ", NOvalsA, "\n"
+       print "NOVecs A = ", NOvecsA, "\n"
+       print "NOVals B = ", NOvalsB, "\n"
+       print "NOVecs B = ", NOvecsB, "\n"
+       return PdagAlpha, PdagBeta
