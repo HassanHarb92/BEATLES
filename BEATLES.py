@@ -472,10 +472,10 @@ def OrbTransform(Pa,Pb,S,n):
        print "OrbTransform Subroutine test:\n"
        print "PdagAlpha = ", PdagAlpha, "\n"
        print "PdagBeta = ", PdagBeta, "\n"
-       NOvalsA, NOvecsA = np.linalg.eig(PdagAlpha)
-       NOvalsB, NOvecsB = np.linalg.eig(PdagBeta) 
-       print "NOVals A = ", NOvalsA, "\n"
-       print "NOVecs A = ", NOvecsA, "\n"
-       print "NOVals B = ", NOvalsB, "\n"
-       print "NOVecs B = ", NOvecsB, "\n"
-       return PdagAlpha, PdagBeta
+       OvalsA, OvecsA = np.linalg.eig(PdagAlpha)
+       OvalsB, OvecsB = np.linalg.eig(PdagBeta) 
+       print "OVals A = ", OvalsA, "\n"
+       print "OVecs A = ", OvecsA, "\n"
+       print "OVals B = ", OvalsB, "\n"
+       print "OVecs B = ", OvecsB, "\n"
+       return PdagAlpha, PdagBeta, OvecsA, OvecsB, OvalsA, OvalsB
