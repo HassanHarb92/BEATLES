@@ -147,7 +147,6 @@ def GetAtoms(filename1,NAtoms):
 #         3 = Alpha MO Energies
 #        -3 = Beta MO Energies
 #
-
 def MatGrab(filename,NBasis,switch):
    if (switch == 1):
       filename1 = filename
@@ -480,3 +479,46 @@ def OrbTransform(Pa,Pb,S,n):
        print "OVals B = ", OvalsB, "\n"
        print "OVecs B = ", OvecsB, "\n"
        return PdagAlpha, PdagBeta, OvecsA, OvecsB, OvalsA, OvalsB
+
+# CartoZmat: Transforms Cartesian coordinates to z-matrix form
+# Input: NAtoms, RawCart, AtomicNum
+# Output: z-matrix file
+#
+
+def DistAB(xa,ya,za,xb,yb,zb):
+    e1 = [xa, ya, za]
+    e2 = [xb, yb, zb]
+    R = 0.0
+    for i in range(0,3):
+      R = R + (e1[i]-e2[i])**2
+    R = math.sqrt(R) 
+    Rab = math.sqrt((xb-xa)**2+(yb-ya)**2+(zb-za)**2)
+    print "Distance = ", Rab
+    print " R = ", R
+    return R
+
+def AngleABC(xa,ya,za,xb,yb,zb,xc,yc,zc):
+    eab_x = (xa - xb) / DistAB(xa,ya,za,xb,yb,zb)
+    eab_y = (ya - yb) / DistAB(xa,ya,za,xb,yb,zb)
+    eab_z = (za - zb) / DistAB(xa,ya,za,xb,yb,zb)
+
+    ebc_x = (xc - xb) / DistAB(xb,yb,zb,xc,yc,zc)
+    ebc_y = (yc - yb) / DistAB(xb,yb,zb,xc,yc,zc)
+    ebc_z = (zc - zb) / DistAB(xb,yb,zb,xc,yc,zc)
+
+    eab = [eab_x, eab_y, eab_z]
+    ebc = [ebc_x, ebc_y, ebc_z]
+   
+    cos_angle = np.dot(eab,ebc)
+    angle = np.arccos(cos_angle) / 3.1415926535 * 180
+    print "Cosine of angle =" , cos_angle
+    print "Angle = ", angle
+    return eab, ebc, angle    
+
+def TorsionABCD(xa,ya,za,xb,yb,zb,xc,yc,zc,xd,yd,zd):
+    eab, ebc, angle1 = AngleABC(xa,ya,za,xb,yb,zb,xc,yc,zc)
+    ebc, ecd, angle2 = AngleABC(xb,yb,zb,xc,yc,zc,xd,yd,zd)
+    cos_angle = np.dot(np.cross(eab,ebc),np.cross(ebc,ecd)) / (np.sin(angle1)*np.sin(angle2))
+    angle = np.arccos(cos_angle) / 3.1415926535 * 180
+    print "The Dihedral angle is =", angle
+
