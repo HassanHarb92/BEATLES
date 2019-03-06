@@ -485,26 +485,24 @@ def OrbTransform(Pa,Pb,S,n):
 # Output: z-matrix file
 #
 
-def DistAB(xa,ya,za,xb,yb,zb):
-    e1 = [xa, ya, za]
-    e2 = [xb, yb, zb]
+def DistAB(e1,e2):
     R = 0.0
     for i in range(0,3):
       R = R + (e1[i]-e2[i])**2
     R = math.sqrt(R) 
-    Rab = math.sqrt((xb-xa)**2+(yb-ya)**2+(zb-za)**2)
-    print "Distance = ", Rab
+#    Rab = math.sqrt((xb-xa)**2+(yb-ya)**2+(zb-za)**2)
+#    print "Distance = ", Rab
     print " R = ", R
     return R
 
-def AngleABC(xa,ya,za,xb,yb,zb,xc,yc,zc):
-    eab_x = (xa - xb) / DistAB(xa,ya,za,xb,yb,zb)
-    eab_y = (ya - yb) / DistAB(xa,ya,za,xb,yb,zb)
-    eab_z = (za - zb) / DistAB(xa,ya,za,xb,yb,zb)
+def AngleABC(e1,e2,e3):
+    eab_x = (e1[0] - e2[0]) / DistAB(e1,e2)
+    eab_y = (e1[1] - e2[1]) / DistAB(e1,e2)
+    eab_z = (e1[2] - e2[2]) / DistAB(e1,e2)
 
-    ebc_x = (xc - xb) / DistAB(xb,yb,zb,xc,yc,zc)
-    ebc_y = (yc - yb) / DistAB(xb,yb,zb,xc,yc,zc)
-    ebc_z = (zc - zb) / DistAB(xb,yb,zb,xc,yc,zc)
+    ebc_x = (e3[0] - e2[0]) / DistAB(e2,e3)
+    ebc_y = (e3[1] - e2[1]) / DistAB(e2,e3)
+    ebc_z = (e3[2] - e2[2]) / DistAB(e2,e3)
 
     eab = [eab_x, eab_y, eab_z]
     ebc = [ebc_x, ebc_y, ebc_z]
@@ -515,10 +513,11 @@ def AngleABC(xa,ya,za,xb,yb,zb,xc,yc,zc):
     print "Angle = ", angle
     return eab, ebc, angle    
 
-def TorsionABCD(xa,ya,za,xb,yb,zb,xc,yc,zc,xd,yd,zd):
-    eab, ebc, angle1 = AngleABC(xa,ya,za,xb,yb,zb,xc,yc,zc)
-    ebc, ecd, angle2 = AngleABC(xb,yb,zb,xc,yc,zc,xd,yd,zd)
+def TorsionABCD(e1,e2,e3,e4):
+    eab, ebc, angle1 = AngleABC(e1,e2,e3)
+    ebc, ecd, angle2 = AngleABC(e2,e3,e4)
     cos_angle = np.dot(np.cross(eab,ebc),np.cross(ebc,ecd)) / (np.sin(angle1)*np.sin(angle2))
     angle = np.arccos(cos_angle) / 3.1415926535 * 180
+    print "Cos angle = ", cos_angle
     print "The Dihedral angle is =", angle
 
