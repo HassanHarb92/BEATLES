@@ -103,6 +103,8 @@ def GeomGet(filename,NAtoms):
                   r = r + 1
                p = 0
    print "Raw Cart (subroutine) = ", RawCart
+   RawCart = RawCart/1.88973
+   print "Raw Cart (in angstroms) = ", RawCart
    return  RawCart
 
 # GetAtoms:  Reads in file name, number of atoms
