@@ -492,8 +492,6 @@ def DistAB(e1,e2):
     for i in range(0,3):
       R = R + (e1[i]-e2[i])**2
     R = math.sqrt(R) 
-#    Rab = math.sqrt((xb-xa)**2+(yb-ya)**2+(zb-za)**2)
-#    print "Distance = ", Rab
     print " R = ", R
     return R
 
