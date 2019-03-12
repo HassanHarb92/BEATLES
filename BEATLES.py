@@ -489,7 +489,8 @@ def OrbTransform(Pa,Pb,S,n):
 
 # Note that there are three other functions here, Dist, Angle, and Torsion. 
 # They are used to calculate the appropriate parameters for the z-matrix
-#
+# switch =  1 : print z-matrix to screen
+# switch = -1 : print z-matrix to new textfile   
 
 def DistAB(e1,e2):
     R = 0.0
@@ -545,7 +546,8 @@ def TorsionABCD(e1,e2,e3,e4):
     angle = -math.atan2(sin_angle,cos_angle) / 3.1415926535 * 180
     return angle
 
-def CartoZmat(RawCart,NAtoms,AtomicNum):
+def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
+  if (switch == 1):
     Cart = np.resize(RawCart,(NAtoms,3))
     print "Cartesian = ", Cart 
     print "Atoms list = ", AtomicNum
@@ -574,4 +576,60 @@ def CartoZmat(RawCart,NAtoms,AtomicNum):
            print Symbol, 1, R 
         elif (i == 0):
            print Symbol
+  elif (switch == -1):
+    Cart = np.resize(RawCart,(NAtoms,3))
+    #open new file
+    filename =  os.path.splitext(filename2)[0] + "-zmat.txt"
+    with open(filename,'w') as f2:
+      NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy =  NBasGrab(filename2)
+      f2.write("Z-Matrix file for ")
+      f2.write(filename2)
+      f2.write("\n\n")
+      f2.write(str(Charge))
+      f2.write(" ")
+      f2.write(str(Multiplicity))
+      f2.write("\n")
+      for i in range(len(AtomicNum)):
+         Symbol = AtomicSymbol(int(AtomicNum[i]))
+         if (i > 2):
+           e4 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           e3 = [Cart[2,0],Cart[2,1],Cart[2,2]]
+           e2 = [Cart[1,0],Cart[1,1],Cart[1,2]]
+           e1 = [Cart[0,0],Cart[0,1],Cart[0,2]]
+           R = DistAB(e4,e1)
+           eab, ebc, A = AngleABC(e2,e1,e4)
+           D = TorsionABCD(e4,e1,e2,e3)
+           f2.write(Symbol)
+           f2.write(" 1 ") 
+           f2.write(str(R)) 
+           f2.write(" 2 ") 
+           f2.write( str(A))  
+           f2.write(" 3 ")  
+           f2.write(str(D))
+           f2.write("\n")           
+         elif (i > 1):
+           e4 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           e2 = [Cart[1,0],Cart[1,1],Cart[1,2]]
+           e1 = [Cart[0,0],Cart[0,1],Cart[0,2]]
+           R = DistAB(e4,e1)
+           eab, ebc, A = AngleABC(e2,e1,e4)
+           f2.write(str(Symbol)) 
+           f2.write(" 1 ")
+           f2.write (str(R)) 
+           f2.write(" 2 ") 
+           f2.write(str(A)) 
+           f2.write("\n")
+         elif (i > 0):
+           e4 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           e1 = [Cart[0,0],Cart[0,1],Cart[0,2]]
+           R = DistAB(e4,e1)
+           f2.write(Symbol)  
+           f2.write(" 1 ")
+           f2.write(str(R))
+           f2.write("\n")
+         elif (i == 0):
+           f2.write(Symbol)
+           f2.write("\n")           
+    print "test test"
+
 
