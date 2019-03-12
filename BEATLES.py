@@ -104,7 +104,7 @@ def GeomGet(filename,NAtoms):
                p = 0
    print "Raw Cart (subroutine) = ", RawCart
    RawCart = RawCart/1.88973
-   print "Raw Cart (in angstroms) = ", RawCart
+   print "Raw Cart (converted to Angstroms) = ", RawCart
    return  RawCart
 
 # GetAtoms:  Reads in file name, number of atoms
@@ -484,40 +484,94 @@ def OrbTransform(Pa,Pb,S,n):
 
 # CartoZmat: Transforms Cartesian coordinates to z-matrix form
 # Input: NAtoms, RawCart, AtomicNum
-# Output: z-matrix file
+# Output: z-matrix printed on the screen
+#
+
+# Note that there are three other functions here, Dist, Angle, and Torsion. 
+# They are used to calculate the appropriate parameters for the z-matrix
 #
 
 def DistAB(e1,e2):
     R = 0.0
-    for i in range(0,3):
-      R = R + (e1[i]-e2[i])**2
-    R = math.sqrt(R) 
-    print " R = ", R
+    for i in range(len(e1)):
+      R = R + (e1[i]-e2[i])**(2)
+    R = R**(0.5) 
     return R
 
 def AngleABC(e1,e2,e3):
-    eab_x = (e1[0] - e2[0]) / DistAB(e1,e2)
-    eab_y = (e1[1] - e2[1]) / DistAB(e1,e2)
-    eab_z = (e1[2] - e2[2]) / DistAB(e1,e2)
+    eab_x = (e2[0] - e1[0]) / DistAB(e1,e2)
+    eab_y = (e2[1] - e1[1]) / DistAB(e1,e2)
+    eab_z = (e2[2] - e1[2]) / DistAB(e1,e2)
 
-    ebc_x = (e3[0] - e2[0]) / DistAB(e2,e3)
-    ebc_y = (e3[1] - e2[1]) / DistAB(e2,e3)
-    ebc_z = (e3[2] - e2[2]) / DistAB(e2,e3)
+    ebc_x = - (e3[0] - e2[0]) / DistAB(e2,e3)
+    ebc_y = - (e3[1] - e2[1]) / DistAB(e2,e3)
+    ebc_z = - (e3[2] - e2[2]) / DistAB(e2,e3)
 
     eab = [eab_x, eab_y, eab_z]
     ebc = [ebc_x, ebc_y, ebc_z]
    
     cos_angle = np.dot(eab,ebc)
     angle = np.arccos(cos_angle) / 3.1415926535 * 180
-    print "Cosine of angle =" , cos_angle
-    print "Angle = ", angle
     return eab, ebc, angle    
 
 def TorsionABCD(e1,e2,e3,e4):
-    eab, ebc, angle1 = AngleABC(e1,e2,e3)
-    ebc, ecd, angle2 = AngleABC(e2,e3,e4)
-    cos_angle = np.dot(np.cross(eab,ebc),np.cross(ebc,ecd)) / (np.sin(angle1)*np.sin(angle2))
-    angle = np.arccos(cos_angle) / 3.1415926535 * 180
-    print "Cos angle = ", cos_angle
-    print "The Dihedral angle is =", angle
+
+    eab_x = (e2[0] - e1[0]) / DistAB(e1,e2)
+    eab_y = (e2[1] - e1[1]) / DistAB(e1,e2)
+    eab_z = (e2[2] - e1[2]) / DistAB(e1,e2)    
+
+    ebc_x =  (e3[0] - e2[0]) / DistAB(e2,e3)
+    ebc_y =  (e3[1] - e2[1]) / DistAB(e2,e3)
+    ebc_z =  (e3[2] - e2[2]) / DistAB(e2,e3)
+
+    ecd_x = (e4[0] - e3[0]) / DistAB(e3,e4)
+    ecd_y = (e4[1] - e3[1]) / DistAB(e3,e4)
+    ecd_z = (e4[2] - e3[2]) / DistAB(e3,e4)
+
+    eab = [eab_x, eab_y, eab_z]
+    ebc = [ebc_x, ebc_y, ebc_z]
+    ecd = [ecd_x, ecd_y, ecd_z]
+
+    n1 = np.cross(eab,ebc) / (np.linalg.norm(np.cross(eab,ebc))) 
+    n2 = np.cross(ebc,ecd) / (np.linalg.norm(np.cross(ebc,ecd)))
+
+    u1 = n2
+    u3 = ebc/np.linalg.norm(ebc)
+    u2 = np.cross(u3,u1)
+
+    cos_angle = np.dot(n1,n2)
+    sin_angle = np.dot(n1,u2)
+    
+    angle = -math.atan2(sin_angle,cos_angle) / 3.1415926535 * 180
+    return angle
+
+def CartoZmat(RawCart,NAtoms,AtomicNum):
+    Cart = np.resize(RawCart,(NAtoms,3))
+    print "Cartesian = ", Cart 
+    print "Atoms list = ", AtomicNum
+    for i in range(len(AtomicNum)):
+        Symbol = AtomicSymbol(int(AtomicNum[i]))
+        if (i > 2):
+           e4 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           e3 = [Cart[2,0],Cart[2,1],Cart[2,2]]
+           e2 = [Cart[1,0],Cart[1,1],Cart[1,2]]
+           e1 = [Cart[0,0],Cart[0,1],Cart[0,2]]
+           R = DistAB(e4,e1)
+           eab, ebc, A = AngleABC(e2,e1,e4)
+           D = TorsionABCD(e4,e1,e2,e3)
+           print Symbol, 1 ,  R , 2,  A , 3,  D  
+        elif (i > 1):
+           e4 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           e2 = [Cart[1,0],Cart[1,1],Cart[1,2]]
+           e1 = [Cart[0,0],Cart[0,1],Cart[0,2]]
+           R = DistAB(e4,e1)
+           eab, ebc, A = AngleABC(e2,e1,e4)
+           print Symbol, 1 , R , 2, A
+        elif (i > 0):
+           e4 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           e1 = [Cart[0,0],Cart[0,1],Cart[0,2]]
+           R = DistAB(e4,e1)
+           print Symbol, 1, R 
+        elif (i == 0):
+           print Symbol
 
