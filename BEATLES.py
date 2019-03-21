@@ -28,6 +28,7 @@ def NBasGrab(filename):
   Charge = 0
   Multiplicity = 0
   NAtoms = 0
+  temp = 1
   with open(filename, 'r') as origin:
      for line in origin:
         if "Number of basis functions" in line:
@@ -40,8 +41,11 @@ def NBasGrab(filename):
            words = line.split()
            for i in words:
               for letter in i:
+                 if(letter=="-"):
+                   temp = -1
                  if(letter.isdigit()):
                     Charge = Charge*10 + int(letter)
+              Charge = Charge*temp
         if "Multiplicity" in line:
            words = line.split()
            for i in words:
