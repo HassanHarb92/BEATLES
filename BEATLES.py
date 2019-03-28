@@ -24,6 +24,8 @@ import os
 #          -SCF Energy 
 #          -Total Energy (needs to be added)
 
+# Section 1: Reading from gaussian formatted checkpoint file
+
 def NBasGrab(filename):
   NBasis = 0  
   NElem = 0
@@ -638,4 +640,126 @@ def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
            f2.write("\n")           
     print "test test"
 
+# Section 2: Reading from gaussian matrix files
 
+# MatGrab2: Reads in matrices from gaussian matrix file
+#
+# Switch:  1 : Alpha Core Hamiltonian
+#         -1 : Beta Core Hamiltonian
+
+def MatGrab2(filename,NBasis,switch):
+    print "Reading from Matrix file\n"
+    if (switch == 1):
+        print "Reading Alpha Core Hamiltonian Matrix:\n"
+        NElements = int(NBasis*(NBasis + 1)/2)
+        print "Looking for ", NElements, " elements of the core hamilonian\n"
+        CoreHRawa = np.zeros(NElements)
+        p = 0
+        n = 0 
+        r = 0
+        with open(filename,'r') as origin:
+             for i, line in enumerate(origin):
+                if "CORE HAMILTONIAN ALPHA" in line :
+                   while (p < (NElements)):
+                     NLines = NBasis - 5*r
+                     if (NLines < 0):
+                        print "Done Reading Core Hamolitonian"
+                     j = i+3
+                     i = i + 4
+                     end = j + NLines - 1
+                     nextline = origin.next()
+                     for m in range(i,i+NLines):
+                         nextline = origin.next()
+                         words = nextline.split()
+                         for j in range(1,len(words)):
+                             CoreHRawa[p] = float(words[j].replace('D','E'))
+                             p = p + 1
+                     r = r + 1
+                     i = m - 2
+        return CoreHRawa
+    if (switch == -1):
+        print "Reading Beta Core Hamiltonian Matrix:\n"
+        NElements = int(NBasis*(NBasis + 1)/2)
+        print "Looking for ", NElements, " elements of the core hamilonian\n"
+        CoreHRawb = np.zeros(NElements)
+        p = 0
+        n = 0
+        r = 0
+        with open(filename,'r') as origin:
+             for i, line in enumerate(origin):
+                if "CORE HAMILTONIAN BETA" in line :
+                   while (p < (NElements)):
+                     NLines = NBasis - 5*r
+                     if (NLines < 0):
+                        print "Done Reading Core Hamolitonian"
+                     j = i+3
+                     i = i + 4
+                     end = j + NLines - 1
+                     nextline = origin.next()
+                     for m in range(i,i+NLines):
+                         nextline = origin.next()
+                         words = nextline.split()
+                         for j in range(1,len(words)):
+                             CoreHRawb[p] = float(words[j].replace('D','E'))
+                             p = p + 1
+                     r = r + 1
+                     i = m - 2
+        return CoreHRawb
+
+    if (switch == 2):
+        print "Reading Alpha Fock Matrix:\n"
+        NElements = int(NBasis*(NBasis + 1)/2)
+        print "Looking for ", NElements, " elements of the fock matrix\n"
+        FockRawA = np.zeros(NElements)
+        p = 0
+        n = 0
+        r = 0
+        with open(filename,'r') as origin:
+             for i, line in enumerate(origin):
+                if "ALPHA FOCK MATRIX" in line :
+                   while (p < (NElements)):
+                     NLines = NBasis - 5*r
+                     if (NLines < 0):
+                        print "Done Reading fock matrix"
+                     j = i+3
+                     i = i + 4
+                     end = j + NLines - 1
+                     nextline = origin.next()
+                     for m in range(i,i+NLines):
+                         nextline = origin.next()
+                         words = nextline.split()
+                         for j in range(1,len(words)):
+                             FockRawA[p] = float(words[j].replace('D','E'))
+                             p = p + 1
+                     r = r + 1
+                     i = m - 2
+        return FockRawA
+
+    if (switch == -2):
+        print "Reading Beta Fock Matrix:\n"
+        NElements = int(NBasis*(NBasis + 1)/2)
+        print "Looking for ", NElements, " elements of the fock matrix\n"
+        FockRawB = np.zeros(NElements)
+        p = 0
+        n = 0
+        r = 0
+        with open(filename,'r') as origin:
+             for i, line in enumerate(origin):
+                if "BETA FOCK MATRIX" in line :
+                   while (p < (NElements)):
+                     NLines = NBasis - 5*r
+                     if (NLines < 0):
+                        print "Done Reading fock matrix"
+                     j = i+3
+                     i = i + 4
+                     end = j + NLines - 1
+                     nextline = origin.next()
+                     for m in range(i,i+NLines):
+                         nextline = origin.next()
+                         words = nextline.split()
+                         for j in range(1,len(words)):
+                             FockRawB[p] = float(words[j].replace('D','E'))
+                             p = p + 1
+                     r = r + 1
+                     i = m - 2
+        return FockRawB
