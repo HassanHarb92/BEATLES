@@ -12,7 +12,7 @@ import os
 
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
 #
-#          Updated March 21, 2019 by Hassan Harb
+#          Updated March 29, 2019 by Hassan Harb
 #
 # NBasGrab: reads in a name of .fchk file
 # output:  -Number of basis functions
