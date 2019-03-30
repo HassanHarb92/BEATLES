@@ -643,9 +643,12 @@ def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
 # Section 2: Reading from gaussian matrix files
 
 # MatGrab2: Reads in matrices from gaussian matrix file
-#
+# 
 # Switch:  1 : Alpha Core Hamiltonian
 #         -1 : Beta Core Hamiltonian
+#          2 : Alpha Fock Matrix
+#         -2 : Beta Fock Matrix
+#
 
 def MatGrab2(filename,NBasis,switch):
     print "Reading from Matrix file\n"
