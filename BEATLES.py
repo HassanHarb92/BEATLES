@@ -12,7 +12,7 @@ import os
 
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
 #
-#          Updated March 29, 2019 by Hassan Harb
+#          Updated May 14, 2019 by Hassan Harb
 #
 # NBasGrab: reads in a name of .fchk file
 # output:  -Number of basis functions
@@ -350,7 +350,7 @@ def column2square(A,NBasis):
   t=0
   for i in range(0,NBasis):
      for j in range(0,NBasis):
-       C[j,i]=A[t]
+       C[j,i]=float(A[t])
        t=t+1
   return C
 
@@ -766,3 +766,68 @@ def MatGrab2(filename,NBasis,switch):
                      r = r + 1
                      i = m - 2
         return FockRawB
+
+# ERIRead: reads in regular 2e integrals from formatted matrix file
+# Note that to get these integrals, use SCF=Conventional and int=NoRaff (saves integrals to disk and prints out regular 2e integrals)
+# Input: matrix filename
+# Output: 2D Matrix, two columns: Column 1 = compound index, Column 2 = integral value
+# 
+# Two small functions are defined here: swap(a,b) and Fourindex(a,b,c,d)
+
+
+def swap(a,b):
+   return b,a
+
+def Fourindex(a,b,c,d):
+   a = int(a)
+   b = int(b)
+   c = int(c)
+   d = int(d)
+   if (a < b):
+       a, b = swap(a,b)
+   if (c < d):
+       c, d = swap(c,d)
+   e = int(a*(a+1)/2 + b)
+   f = int(c*(c+1)/2 + d)
+   if (e<f):
+      e,f = swap(e,f)
+   g = e*(e +1)/2 + f
+   return int(g)
+
+def ERIRead(filename,NBasis):
+    NElements = 0
+    p = 0
+    print "Reading ERIs from Gaussian Matrix File"
+    print "Subroutine can only read regular 2e integrals (NO RAFINETTI)"
+    with open(filename,'r') as origin:
+        for i, line in enumerate(origin):
+            if "Label REGULAR 2E INTEGRALS" in line:
+                print "Found 2e integrals!"
+                words = line.split()
+                print "Total number of elements = ", words[9]
+                NElements = int(words[9])
+                print "NElements = ", NElements
+                eri_raw = np.zeros((NElements,5))
+            while (p < NElements):
+                nextline = origin.next()
+                words = nextline.split() 
+                eri_raw[p,0] = words[1]
+                eri_raw[p,1] = words[3]
+                eri_raw[p,2] = words[5]
+                eri_raw[p,3] = words[7]
+                eri_raw[p,4] = float(words[9].replace('D','E'))
+#                print "(",int(eri_raw[p,0]),int(eri_raw[p,1]),"|",int(eri_raw[p,2]),int(eri_raw[p,3]),") = ", eri_raw[p,4]
+                p = p + 1
+#    print "ERI RAW = ", eri_raw
+    NTotal = Fourindex(NBasis,NBasis,NBasis,NBasis) + 1
+    eri_array = np.zeros(NTotal)
+    eri_compact = np.zeros((NElements,2))
+    print "Total length of sparse 1D vector =", NTotal
+    print "Now forming compound indices"
+    for i in range(0,NElements):
+        eri_compact[i,0] = Fourindex(eri_raw[i,0], eri_raw[i,1], eri_raw[i,2], eri_raw[i,3])
+        eri_compact[i,1] = eri_raw[i,4]
+        eri_array[int(eri_compact[i,0])] = eri_compact[i,1]
+    #    print "mu nu lambda sigma = ", int(eri_compact[i,0]), ", int = ", eri_compact[i,1], "One D array Value =", eri_array[eri_compact[i,0]]
+
+    return eri_array
