@@ -186,7 +186,8 @@ def MatGrab(filename,NBasis,switch):
                           r = r+1
                        p = 0
       print "MO Raw = ", MOrawa
-      return MOrawa, AMO
+      return MOrawa
+
    if (switch == -1):
       filename1 = filename
       MOElements = NBasis * NBasis
@@ -196,6 +197,7 @@ def MatGrab(filename,NBasis,switch):
       p = 0
       r = 0
       BOE = 0
+      BMO = 0
       MOrawb = np.zeros(NBasis*NBasis)
       with open(filename1,'r') as origin:
          for i, line  in enumerate(origin):
@@ -216,7 +218,7 @@ def MatGrab(filename,NBasis,switch):
                        p = 0
 
          print "MO Raw = ", MOrawb
-         return MOrawb, BMO
+         return MOrawb
 
    if (switch == 2):
       filename1 = filename
@@ -224,9 +226,10 @@ def MatGrab(filename,NBasis,switch):
       Plines = int(PElements/5) + 1
       TotalPraw = np.zeros(PElements)
       SpinPraw = np.zeros(PElements)
+
       with open(filename1,'r') as origin:
        for i, line in enumerate(origin):
-        if  "Total SCF Density" in line:
+          if  "Total SCF Density" in line:
               i=i+1
               r = 0
               p = 0
@@ -236,11 +239,16 @@ def MatGrab(filename,NBasis,switch):
               for m in range(0,j-i+1):
                  nextline = origin.next()
                  nextline = nextline.split()
-                 for p in range(p,len(nextline)):
-                   TotalPraw[r] = nextline[p]
-                   r = r+1
+                 for p in range(0,len(nextline)):
+                   if (r != PElements):
+                       TotalPraw[r] = nextline[p]
+                       r = r+1
                  p = 0
-        if  "Spin SCF Density" in line:
+# HH + : Bug ... :(
+      with open(filename1,'r') as origin:
+       for i, line in enumerate(origin):
+          if  "Spin SCF Density" in line:
+              print "Found Spin density!"
               i=i+1
               r = 0
               p = 0
@@ -251,14 +259,17 @@ def MatGrab(filename,NBasis,switch):
                  nextline = origin.next()
                  nextline = nextline.split()
                  for p in range(p,len(nextline)):
-                   SpinPraw[r] = nextline[p]
-                   r = r+1
+                     if (r != PElements):
+                       SpinPraw[r] = nextline[p]
+                       r = r+1
                  p = 0
-       PalphaRaw = (np.add(TotalPraw,SpinPraw)) * 0.5
-       PbetaRaw = (np.subtract(TotalPraw,SpinPraw)) * 0.5
-       Palpha = symmetrize(PalphaRaw)
-       Pbeta  = symmetrize(PbetaRaw)       
-       return Palpha, Pbeta
+# HH - : End of bug (hopefully!)
+
+      PalphaRaw = (np.add(TotalPraw,SpinPraw)) * 0.5
+      PbetaRaw = (np.subtract(TotalPraw,SpinPraw)) * 0.5
+      Palpha = symmetrize(PalphaRaw)
+      Pbeta  = symmetrize(PbetaRaw)       
+      return Palpha, Pbeta
 
    if (switch == 3):
       filename1 = filename
@@ -650,6 +661,14 @@ def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
 #         -2 : Beta Fock Matrix
 #
 
+#def ERIRead(filename):
+#    print "Reading ERIs from Gaussian Matrix File"
+#    print "Subroutine can only read regular 2e integrals (NO RAFINETTI)" 
+#    with open(filename,'r') as origin:
+#        for i, line in enumerate(origin):
+#            if "Label REGULAR 2E INTEGRALS" in line:
+#                print "Found 2e integrals!"
+
 def MatGrab2(filename,NBasis,switch):
     print "Reading from Matrix file\n"
     if (switch == 1):
@@ -766,6 +785,58 @@ def MatGrab2(filename,NBasis,switch):
                      r = r + 1
                      i = m - 2
         return FockRawB
+
+# SymmetrizeMat: Reads in packed matrix (recovered from Matrix file) and prints out NBasis x NBasis matrix
+# Input: Packed lower triangular A
+# Output: N x N Matrix
+
+def symmetrizeMat(a):
+   NBasis = int((np.sqrt(8*len(a)+1)-1)/2)
+   NewMat = np.zeros((NBasis,NBasis))
+   NElements = len(a)
+   t = 0
+   l = 0
+   start = 0
+   loop = NBasis
+   nBlock = int(NBasis/5)
+   nRem = NBasis%5
+   print "nBlock = ", nBlock
+   print "nRem = ", nRem
+   i = start
+   j = start
+   if (nBlock == 0):
+      nBlock =1
+
+   while (l < nBlock):
+       print "retrieving block ", l
+       for i in range (start,loop):
+              for j in range(start,start+5):
+                  if (j<=i):
+                    print "i,j = ",i,j
+                    NewMat[i,j] = a[t]
+                    NewMat[j,i] = a[t]
+                    print "A[t]= ", a[t]
+                    t = t + 1
+       start = start + 5
+       l = l + 1
+   print "t = ", t
+   print "values of i and j after nBlock loop is over: ", i, j
+   j = j + 1
+   start = j
+   print "NBasis - nRem = ", NBasis -nRem
+   i = NBasis - nRem
+   while (i < NBasis):
+       j = start
+       while (j <= i):
+         print "i,j = ",i,j
+         NewMat[i,j] = a[t]
+         NewMat[j,i] = a[t]
+         print "A[t]= ", a[t]
+         t = t + 1
+         j = j + 1
+       i = i + 1
+   print "final value of t = ", t
+   return NewMat
 
 # ERIRead: reads in regular 2e integrals from formatted matrix file
 # Note that to get these integrals, use SCF=Conventional and int=NoRaff (saves integrals to disk and prints out regular 2e integrals)
