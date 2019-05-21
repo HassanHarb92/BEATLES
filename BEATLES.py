@@ -14,6 +14,17 @@ import os
 #
 #          Updated May 19, 2019 by Hassan Harb
 #
+#          /     |    \
+#         /      |     \
+#        /O   O  | O   O\
+#       //|\ /|\  /|\ /|\\              
+#      /=/ \=/ \= / \=/ \=\
+#     / ==  ==  ==  ==  == \
+#    / ==   ==  ==  ==   == \ 
+#
+# (ASCII retrieved from https://www.asciiart.eu/music/musicians/beatles )
+####################################################
+#
 # NBasGrab: reads in a name of .fchk file
 # output:  -Number of basis functions
 #          -Charge
