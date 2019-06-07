@@ -23,7 +23,8 @@ import os
 #    / ==   ==  ==  ==   == \ 
 #
 # (ASCII retrieved from https://www.asciiart.eu/music/musicians/beatles )
-####################################################
+#
+#########################################################################
 #
 # NBasGrab: reads in a name of .fchk file
 # output:  -Number of basis functions
