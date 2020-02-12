@@ -12,7 +12,7 @@ import os
 
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
 #
-#          Updated May 19, 2019 by Hassan Harb
+#          Updated June 18, 2019 by Hassan Harb
 #
 #          /     |    \
 #         /      |     \
@@ -671,7 +671,7 @@ def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
 #         -1 : Beta Core Hamiltonian
 #          2 : Alpha Fock Matrix
 #         -2 : Beta Fock Matrix
-#
+#          3 : Dipole matrix elements (x,y,z) [IN PROGRESS]
 
 #def ERIRead(filename):
 #    print "Reading ERIs from Gaussian Matrix File"
@@ -798,6 +798,97 @@ def MatGrab2(filename,NBasis,switch):
                      i = m - 2
         return FockRawB
 
+    if (switch == 3):
+       print "Reading Dipole integrals, matrix x\n"
+       NElements = int(NBasis*(NBasis +1)/2)
+       print "Looking for ", NElements, " elements of the Dipole integrals matrix x\n"
+       DipX_Raw = np.zeros(NElements)
+       p = 0
+       n = 0
+       r = 0
+       with open(filename,'r') as origin:
+            for i, line in enumerate(origin):
+                if " DIPOLE INTEGRALS, matrix     1" in line:
+                   while (p < NElements):
+                     NLines = NBasis - 5*r
+                     if (NLines < 0):
+                        print "Done reading Dipole X matrix\n"
+                     j = i+3
+                     i = i + 4
+                     end = j + NLines -1
+                     nextline = origin.next()
+                     words = nextline.split()
+                     for m in range(i,i+NLines):
+                         nextline = origin.next()
+                         words = nextline.split()
+                         for j in range(1,len(words)):
+                             DipX_Raw[p] = float(words[j].replace('D','E'))
+                             p = p + 1
+                     r = r + 1
+                     i = m - 2
+       print "Dip X raw = ", DipX_Raw
+
+       print "Reading Dipole integrals, matrix y\n"
+       NElements = int(NBasis*(NBasis +1)/2)
+       print "Looking for ", NElements, " elements of the Dipole integrals matrix y\n"
+       DipY_Raw = np.zeros(NElements)
+       p = 0
+       n = 0
+       r = 0
+       with open(filename,'r') as origin:
+            for i, line in enumerate(origin):
+                if " DIPOLE INTEGRALS, matrix     2" in line:
+                   while (p < NElements):
+                     NLines = NBasis - 5*r
+                     if (NLines < 0):
+                        print "Done reading Dipole Y matrix\n"
+                     j = i+3
+                     i = i + 4
+                     end = j + NLines -1
+                     nextline = origin.next()
+                     words = nextline.split()
+                     for m in range(i,i+NLines):
+                         nextline = origin.next()
+                         words = nextline.split()
+                         for j in range(1,len(words)):
+                             DipY_Raw[p] = float(words[j].replace('D','E'))
+                             p = p + 1
+                     r = r + 1
+                     i = m - 2
+       print "Dip Y raw = ", DipY_Raw                  
+
+       print "Looking for ", NElements, " elements of the Dipole integrals matrix z\n"
+       DipZ_Raw = np.zeros(NElements)
+       p = 0
+       n = 0
+       r = 0
+       with open(filename,'r') as origin:
+            for i, line in enumerate(origin):
+                if " DIPOLE INTEGRALS, matrix     3" in line:
+                   while (p < NElements):
+                     NLines = NBasis - 5*r
+                     if (NLines < 0):
+                        print "Done reading Dipole Z matrix\n"
+                     j = i+3
+                     i = i + 4
+                     end = j + NLines -1
+                     nextline = origin.next()
+                     words = nextline.split()
+                     for m in range(i,i+NLines):
+                         nextline = origin.next()
+                         words = nextline.split()
+                         for j in range(1,len(words)):
+                             DipZ_Raw[p] = float(words[j].replace('D','E'))
+                             p = p + 1
+                     r = r + 1
+                     i = m - 2
+       print "Dip Z raw = ", DipZ_Raw
+       return symmetrizeMat(DipX_Raw), symmetrizeMat(DipY_Raw), symmetrizeMat(DipZ_Raw)
+
+
+
+
+
 # SymmetrizeMat: Reads in packed matrix (recovered from Matrix file) and prints out NBasis x NBasis matrix
 # Input: Packed lower triangular A
 # Output: N x N Matrix
@@ -812,42 +903,42 @@ def symmetrizeMat(a):
    loop = NBasis
    nBlock = int(NBasis/5)
    nRem = NBasis%5
-   print "nBlock = ", nBlock
-   print "nRem = ", nRem
+#   print "nBlock = ", nBlock
+#   print "nRem = ", nRem
    i = start
    j = start
    if (nBlock == 0):
       nBlock =1
 
    while (l < nBlock):
-       print "retrieving block ", l
+#       print "retrieving block ", l
        for i in range (start,loop):
               for j in range(start,start+5):
                   if (j<=i):
-                    print "i,j = ",i,j
+#                    print "i,j = ",i,j
                     NewMat[i,j] = a[t]
                     NewMat[j,i] = a[t]
-                    print "A[t]= ", a[t]
+#                    print "A[t]= ", a[t]
                     t = t + 1
        start = start + 5
        l = l + 1
-   print "t = ", t
-   print "values of i and j after nBlock loop is over: ", i, j
+#   print "t = ", t
+#   print "values of i and j after nBlock loop is over: ", i, j
    j = j + 1
    start = j
-   print "NBasis - nRem = ", NBasis -nRem
+#   print "NBasis - nRem = ", NBasis -nRem
    i = NBasis - nRem
    while (i < NBasis):
        j = start
        while (j <= i):
-         print "i,j = ",i,j
+#         print "i,j = ",i,j
          NewMat[i,j] = a[t]
          NewMat[j,i] = a[t]
-         print "A[t]= ", a[t]
+#         print "A[t]= ", a[t]
          t = t + 1
          j = j + 1
        i = i + 1
-   print "final value of t = ", t
+#   print "final value of t = ", t
    return NewMat
 
 # ERIRead: reads in regular 2e integrals from formatted matrix file
