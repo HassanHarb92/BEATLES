@@ -12,7 +12,7 @@ import os
 
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
 #
-#          Updated June 18, 2019 by Hassan Harb
+#          Updated Feb 12, 2020  by Hassan Harb
 #
 #          /     |    \
 #         /      |     \
