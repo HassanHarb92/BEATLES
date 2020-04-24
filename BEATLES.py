@@ -77,9 +77,9 @@ def NBasGrab(filename):
 
         if "SCF Energy" in line:
             words = line.split()
-            print "SCF Energy = ", words[3], " Hartree"
+#            print "SCF Energy = ", words[3], " Hartree"
             SCFEnergy = float(words[3])
-            print "SCF Energy (float) = ", SCFEnergy
+#            print "SCF Energy (float) = ", SCFEnergy
 
 #        if "Total Energy" in line:
 #            words = line.split()
@@ -87,8 +87,8 @@ def NBasGrab(filename):
 #            print "Total Energy = ", TotalEnergy, " Hartree"
 
   NElem = NBasis*NBasis
-  print "Number of Basis Functions (subroutine) = ", NBasis, "\n"
-  print "Charge (subroutine) = ", Charge, "\n"
+#  print "Number of Basis Functions (subroutine) = ", NBasis, "\n"
+#  print "Charge (subroutine) = ", Charge, "\n"
   return NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy
 
 # GeomGet: reads in the file name, number of atoms
@@ -187,9 +187,9 @@ def MatGrab(filename,NBasis,switch):
               if  "Alpha MO coefficients" in line:
                     i=i+1
                     AMO=i
-                    print "Alpha MO coefficients starts at line :", i
+#                    print "Alpha MO coefficients starts at line :", i
                     j=i+MOlines-1
-                    print "Alpha MO coefficients ends at line :", j
+#                    print "Alpha MO coefficients ends at line :", j
                     for m in range(0,j-i+1):
                        nextline = origin.next()
                        nextline = nextline.split()
@@ -197,7 +197,7 @@ def MatGrab(filename,NBasis,switch):
                           MOrawa[r] = nextline[p]
                           r = r+1
                        p = 0
-      print "MO Raw = ", MOrawa
+#      print "MO Raw = ", MOrawa
       return MOrawa
 
    if (switch == -1):
@@ -218,9 +218,9 @@ def MatGrab(filename,NBasis,switch):
               if  "Beta MO coefficients" in line:
                     i=i+1
                     BMO=i
-                    print "Beta MO coefficients starts at line :", i
+#                    print "Beta MO coefficients starts at line :", i
                     j=i+MOlines-1
-                    print "Beta MO coefficients ends at line :", j
+#                    print "Beta MO coefficients ends at line :", j
                     for m in range(0,j-i+1):
                        nextline = origin.next()
                        nextline = nextline.split()
@@ -229,7 +229,7 @@ def MatGrab(filename,NBasis,switch):
                           r = r+1
                        p = 0
 
-         print "MO Raw = ", MOrawb
+#         print "MO Raw = ", MOrawb
          return MOrawb
 
    if (switch == 2):
@@ -377,7 +377,7 @@ def column2square(A,NBasis):
        t=t+1
   return C
 
-# GetOverlap:  Reads in packed symmetric column matrix, number of basis functions.
+# GetOverlap:  Reads in packed column matrix, number of basis functions.
 # Output:     -Overlap Matrix (NBasis,NBasis)
 
 def GetOverlap(A,NBasis):
@@ -1005,3 +1005,70 @@ def ERIRead(filename,NBasis):
     #    print "mu nu lambda sigma = ", int(eri_compact[i,0]), ", int = ", eri_compact[i,1], "One D array Value =", eri_array[eri_compact[i,0]]
 
     return eri_array
+
+# OVParse breaks down the MO coefficient matrix (NBasis x NBasis) into an occupied (NBasis x NOcc) and a virtual (NBasis x (Nbasis-NOcc)) matrices
+# Input: A: MO Coefficient (NBasis x NBasis)
+#        NBasis
+#        NOcc = number of electrons
+#
+# Output: A_Occ: rectangular NBasis x NOcc matrix: Columns of occupied MOs
+#         A_Virt: rectangular NBasis x (NBasis - NOcc) matrix: Columns of virtual MOs
+
+##  Note TO SELF: Needs to be tested more, was only tested on H2 and V jobs.
+
+def OVParse(A,NBasis,NOcc):
+
+    A_Occ = np.zeros((NBasis,NOcc))
+    A_Virt = np.zeros((NBasis,NBasis-NOcc))
+
+    for i in range(0,NOcc):
+        A_Occ[:,i] = A[:,i]
+
+    for j in range(0,NBasis-NOcc):
+        A_Virt[:,j] = A[:,j+NOcc]
+
+    return A_Occ, A_Virt
+
+# Biorthog: Calculates the overlap between two sets of MO Coefficients, prints out the final value of the overlap
+# Input: A, B: MO Coefficients, can either be full or parsed (using OVParse subroutine)
+#        S: AO overlap matrix
+#
+# Output: the final value of the overlap
+# 
+# Option: switch: 1 : print all relevant matrices
+#                -1 : Dont print any matrices
+#
+
+def Biorthog(A,B,S,switch):                 # eqn numbers based on personal notes
+   D = np.dot(np.transpose(B),np.dot(S,A))  # eq. 1
+   u, d, v  = np.linalg.svd(D)              # eq. 2
+    
+   DtD = np.dot(np.transpose(D),D)
+   l, V = np.linalg.eig(DtD)
+   U = np.dot(D,V)
+   if (switch==1):
+      print "D = ", D
+      print "DtD = ", DtD
+      print "lambdas = ", l
+      print "Eig Vecs of DtD = ", V
+      print "Determinants = ", np.linalg.det(u), np.linalg.det(v)
+      print "u = ", u
+      print "v = ", v
+   overlap =  np.linalg.det(u)*np.prod(d)*np.linalg.det(v)
+   return d, U, V, D
+
+# PickColumn: Subroutine that selects a specific column from a two dimensional matrix (NBasis,NBasis), outputs an array (NBasis,1)
+# Input: A: Two dimensional matrix
+#        NBasis: Number of basis functions for A
+#        i: the position of the column to be selected
+#
+# Output: One dimensional array (NBasis,1) that is the i-th column of matrix A
+#
+
+def PickColumn(A,NBasis,i):
+    A_Column = np.zeros((NBasis,1))
+    for  j in range(0,NBasis):
+        A_Column[j,0] = A[j,i]
+
+    return A_Column
+
