@@ -12,7 +12,7 @@ import os
 
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
 #
-#          Updated Feb 12, 2020  by Hassan Harb
+#          Updated Apr 26, 2020  by Hassan Harb
 #
 #          /     |    \
 #         /      |     \
@@ -104,17 +104,17 @@ def GeomGet(filename,NAtoms):
    if (NElements%5 == 0):
       n = 0
    RawCartLines = int(NElements/5) + n
-   print "Raw Cart lines = ", RawCartLines
-   print "Number of Atoms =", NAtoms
-   print "Number of coordinates =", NElements
+#   print "Raw Cart lines = ", RawCartLines
+#   print "Number of Atoms =", NAtoms
+#   print "Number of coordinates =", NElements
    with open(filename,'r') as origin:
       for i, line in enumerate(origin):
          if "Current cartesian coordinates" in line:
             i = i + 1
             pointer = i
-            print "Cartesian Coordinates starts at line :", pointer
+#            print "Cartesian Coordinates starts at line :", pointer
             endpointer = pointer + RawCartLines - 1
-            print "Cartesian Coordinates ends at line :", endpointer
+#            print "Cartesian Coordinates ends at line :", endpointer
             for m in range(0,endpointer - pointer +1):
                nextline = origin.next()
                nextline = nextline.split()
@@ -122,9 +122,9 @@ def GeomGet(filename,NAtoms):
                   RawCart[r] = nextline[p]
                   r = r + 1
                p = 0
-   print "Raw Cart (subroutine) = ", RawCart
+#   print "Raw Cart (subroutine) = ", RawCart
    RawCart = RawCart/1.88973
-   print "Raw Cart (converted to Angstroms) = ", RawCart
+#   print "Raw Cart (converted to Angstroms) = ", RawCart
    return  RawCart
 
 # GetAtoms:  Reads in file name, number of atoms
@@ -245,9 +245,9 @@ def MatGrab(filename,NBasis,switch):
               i=i+1
               r = 0
               p = 0
-              print "Total SCF Density starts at line :", i
+#              print "Total SCF Density starts at line :", i
               j=i+Plines-1
-              print "Total SCF Density ends at line :", j
+#              print "Total SCF Density ends at line :", j
               for m in range(0,j-i+1):
                  nextline = origin.next()
                  nextline = nextline.split()
@@ -260,13 +260,13 @@ def MatGrab(filename,NBasis,switch):
       with open(filename1,'r') as origin:
        for i, line in enumerate(origin):
           if  "Spin SCF Density" in line:
-              print "Found Spin density!"
+#              print "Found Spin density!"
               i=i+1
               r = 0
               p = 0
-              print "Spin SCF Density starts at line: ", i
+#              print "Spin SCF Density starts at line: ", i
               j=i+Plines-1
-              print "Spin SCF Density ends at line: ", j
+#              print "Spin SCF Density ends at line: ", j
               for m in range(0,j-i+1):
                  nextline = origin.next()
                  nextline = nextline.split()
@@ -295,9 +295,9 @@ def MatGrab(filename,NBasis,switch):
                 i = i + 1
                 r = 0
                 p = 0
-                print "Alpha MO Energies starts at line: ", i
+#                print "Alpha MO Energies starts at line: ", i
                 j = i + AlphaMOlines - 1
-                print "Alpha MO Energies ends at line: ", j
+#                print "Alpha MO Energies ends at line: ", j
                 for m in range(0,j-i+1):
                     nextline = origin.next()
                     nextline = nextline.split()
@@ -305,7 +305,7 @@ def MatGrab(filename,NBasis,switch):
                         AlphaMO[r] = nextline[p]
                         r = r + 1
                     p = 0
-      print "Alpha MO energies = ", AlphaMO
+#      print "Alpha MO energies = ", AlphaMO
       return AlphaMO
 
    if (switch == -3):
@@ -320,9 +320,9 @@ def MatGrab(filename,NBasis,switch):
                 i = i + 1
                 r = 0
                 p = 0
-                print "Beta MO Energies starts at line: ", i
+#                print "Beta MO Energies starts at line: ", i
                 j = i + BetaMOlines - 1
-                print "Beta MO Energies ends at line: ", j
+#                print "Beta MO Energies ends at line: ", j
                 for m in range(0,j-i+1):
                     nextline = origin.next()
                     nextline = nextline.split()
@@ -330,7 +330,7 @@ def MatGrab(filename,NBasis,switch):
                         BetaMO[r] = nextline[p]
                         r = r + 1
                     p = 0
-      print "Beta MO energies = ", BetaMO
+#      print "Beta MO energies = ", BetaMO
       return BetaMO
 
 # sci_notation:  reads in a number
@@ -399,6 +399,7 @@ def PrintSI(filename1,switch):
     RawCart = GeomGet(filename1,NAtoms)
     Cart = np.resize(RawCart,(NAtoms,3))
     filename2 = os.path.splitext(filename1)[0] + "-SI.txt"
+    filename1 = os.path.splitext(filename1)[0] 
     if (switch == 1):
        with open(filename2,'w') as f2:
          f2.write("SI info for ")
@@ -425,6 +426,8 @@ def PrintSI(filename1,switch):
                  f2.write(" ")
              f2.write("\n")
          f2.write(" ")
+         f2.write("\n\n")
+    return filename2
     if (switch == -1):
       print "SCF Energy = ", SCFEnergy, " Hartree\n"
       print "Charge = ", Charge, "\n"
@@ -454,10 +457,10 @@ def CalcNO(filename,NBasis):
        NOvalsB = NOvalsB.real 
        NOvecsA = NOvecsA.real
        NOvecsB = NOvecsB.real
-       print "Alpha Natural Orbitals Eigenvectors =\n", NOvecsA
-       print "Alpha Natural Orbitals Eigenvalues  =\n", NOvalsA
-       print "Beta  Natural Orbitals Eigenvectors  =\n", NOvecsB
-       print "Beta  Natural Orbitals Eigenvalues   =\n", NOvalsB
+#       print "Alpha Natural Orbitals Eigenvectors =\n", NOvecsA
+#       print "Alpha Natural Orbitals Eigenvalues  =\n", NOvalsA
+#       print "Beta  Natural Orbitals Eigenvectors  =\n", NOvecsB
+#       print "Beta  Natural Orbitals Eigenvalues   =\n", NOvalsB
        return NOvecsA, NOvecsB, NOvalsA, NOvalsB
 
 # NElec: Reads in filename
@@ -502,15 +505,15 @@ def OrbTransform(Pa,Pb,S,n):
        Sdag2 = np.dot(Svecs,np.dot(Sval2,np.transpose(Svecs)))
        PdagAlpha = np.dot(Sdag1,np.dot(Pa,Sdag2))
        PdagBeta = np.dot(Sdag1,np.dot(Pb,Sdag2))
-       print "OrbTransform Subroutine test:\n"
-       print "PdagAlpha = ", PdagAlpha, "\n"
-       print "PdagBeta = ", PdagBeta, "\n"
+#       print "OrbTransform Subroutine test:\n"
+#       print "PdagAlpha = ", PdagAlpha, "\n"
+#       print "PdagBeta = ", PdagBeta, "\n"
        OvalsA, OvecsA = np.linalg.eig(PdagAlpha)
        OvalsB, OvecsB = np.linalg.eig(PdagBeta) 
-       print "OVals A = ", OvalsA, "\n"
-       print "OVecs A = ", OvecsA, "\n"
-       print "OVals B = ", OvalsB, "\n"
-       print "OVecs B = ", OvecsB, "\n"
+#       print "OVals A = ", OvalsA, "\n"
+#       print "OVecs A = ", OvecsA, "\n"
+#       print "OVals B = ", OvalsB, "\n"
+#       print "OVecs B = ", OvecsB, "\n"
        return PdagAlpha, PdagBeta, OvecsA, OvecsB, OvalsA, OvalsB
 
 # CartoZmat: Transforms Cartesian coordinates to z-matrix form
@@ -580,8 +583,8 @@ def TorsionABCD(e1,e2,e3,e4):
 def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
   if (switch == 1):
     Cart = np.resize(RawCart,(NAtoms,3))
-    print "Cartesian = ", Cart 
-    print "Atoms list = ", AtomicNum
+#    print "Cartesian = ", Cart 
+#    print "Atoms list = ", AtomicNum
     for i in range(len(AtomicNum)):
         Symbol = AtomicSymbol(int(AtomicNum[i]))
         if (i > 2):
@@ -661,7 +664,7 @@ def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
          elif (i == 0):
            f2.write(Symbol)
            f2.write("\n")           
-    print "test test"
+#    print "test test"
 
 # Section 2: Reading from gaussian matrix files
 
