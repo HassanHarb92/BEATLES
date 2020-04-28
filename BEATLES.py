@@ -340,6 +340,13 @@ def sci_notation(n):
     a = '%.8f' % n
     return '%.8f' % Decimal(n.real)
 
+# fchk_notation: reads in a number
+# output:        prints the number in the desired notation for fchk files
+#
+def fchk_notation(n):
+    a = '%.8E' % n
+    return '%.8E' % Decimal(n.real)
+
 # AtomicSymbol:  Reads in atomic number of the element
 # Output:       -Atomic Symbol
 # 
