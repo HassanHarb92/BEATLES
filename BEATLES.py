@@ -1082,3 +1082,125 @@ def PickColumn(A,NBasis,i):
 
     return A_Column
 
+# WriteMOs: Subroutine that replaces the MO coefficients and orbital energies in a fchk file
+# Input:    
+#
+def WriteMOs(filename1,filename3,V1,V2,e1,e2,NBasis):
+
+  MOlines = int(len(V1)/5) + 1
+  p = 0
+  r = 0
+  AOE = 0
+
+  with open(filename1,'r') as origin:
+      for i, line  in enumerate(origin):
+          if "Alpha Orbital Energies" in line:
+                AOE = i
+          if  "Alpha MO coefficients" in line:
+                i=i+1
+                AMO=i
+                j=i+MOlines-1
+                for m in range(0,j-i+1):
+                   nextline = origin.next()
+                   nextline = nextline.split()
+                   for p in range(p,len(nextline)):
+                     r = r+1
+                   p = 0
+          if "Beta Orbital Energies" in line:
+                BOE = i
+          if "Beta MO coefficients" in line:
+                r = 0
+                i=i+1
+                BMO = i
+                j=i+MOlines-1
+                for m in range(0,j-i+1):
+                   nextline = origin.next()
+                   nextline = nextline.split()
+                   for p in range(p,len(nextline)):
+                     r = r+1
+                   p = 0
+
+  pointer=0
+  counter=1
+
+
+  with open(filename1,'r') as origin:
+    data = origin.readlines()
+    if "Alpha Orbital Energies" in line:
+      AOE = i  
+      BOE = AOE + int(NBasis/5) + 1
+    with open(filename3,'w') as f2:
+  
+        print "Writing results to new output file: ", filename3, " ... "
+  
+        while (pointer < AOE+1):
+           f2.write(data[pointer])
+           pointer = pointer+1
+        for j in range(0,NBasis):
+            f2.write(" ")
+            if (e1[j] >= 0):
+               f2.write(" ")
+            f2.write(str(fchk_notation(e1[j].real)))
+            if (counter%5 == 0):
+                f2.write("\n")
+                counter=0
+            counter=counter+1
+        counter =1      
+        BOE = AOE + (int(NBasis/5)+2)
+        if (NBasis%5 != 0):
+            f2.write("\n")
+        if (NBasis%5 == 0):
+            BOE = BOE - 1 
+        f2.write(data[BOE])
+        for j in range(0,NBasis):
+            f2.write(" ")
+            if (e2[j] >= 0):
+               f2.write(" ")
+            f2.write(str(fchk_notation(e2[j].real)))
+            if (counter%5 ==0):
+                f2.write("\n")
+                counter=0
+            counter = counter+1
+        counter =1
+        AMO = BOE + (int(NBasis/5)+2)
+        if (NBasis%5 != 0):
+            f2.write("\n")
+        if (NBasis%5 == 0):
+            AMO = AMO - 1
+        f2.write(data[AMO])
+        for i in range(0,NBasis):
+            for j in range(0,NBasis):
+                 f2.write(" ")
+                 if (V1[j,i] >= 0):
+                    f2.write(" ")
+                 f2.write(str(fchk_notation(V1[j,i].real)))
+                 if (counter%5 ==0):
+                     f2.write("\n")
+                     counter=0
+                 counter = counter + 1
+        counter = 1
+        BMO = AMO + (int(NBasis*NBasis/5))+2
+        if (NBasis%5 != 0):
+            f2.write("\n")
+        if (NBasis%5 == 0):
+            BMO = BMO - 1
+        f2.write(data[BMO])
+        for i in range(0,NBasis):
+               for j in range(0,NBasis):
+                    f2.write(" ")
+                    if (V2[j,i] >= 0):
+                       f2.write(" ")
+                    f2.write(str(fchk_notation(V2[j,i].real)))
+                    if (counter%5 ==0):
+                        f2.write("\n")
+                        counter=0
+                    counter = counter + 1
+        counter = 1
+        if (NBasis%5 != 0):
+           f2.write("\n")
+        pointer = BMO + (int(NBasis*NBasis/5))+2
+        while (pointer < len(data)):
+           f2.write(data[pointer])
+           pointer = pointer+1
+  print "Done."    
+
