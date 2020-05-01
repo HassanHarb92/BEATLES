@@ -1085,7 +1085,6 @@ def PickColumn(A,NBasis,i):
 # WriteMOs: Subroutine that replaces the MO coefficients and orbital energies in a fchk file
 # Input:    
 #
-
 def WriteMOs(filename1,filename3,V1,V2,e1,e2,NBasis):
 
   MOlines = int(len(V1)/5) + 1
@@ -1204,4 +1203,23 @@ def WriteMOs(filename1,filename3,V1,V2,e1,e2,NBasis):
            f2.write(data[pointer])
            pointer = pointer+1
   print "Done."    
+
+# OVMerge: Does the opposite of OVParse, merges back the Occ and Virt components of the MO Coefficient matrix
+# Input  : A (Occ Matrix), B(Vir Matrix), Number of occupied orbitals, NBasis
+# 
+# Output : V = Full MO Coefficient Matrix
+#
+# (this subroutine has the exact opposite functionality of OVParse)
+#
+
+def OVMerge(A,B,NOcc,NBasis):
+    V = np.zeros((NBasis,NBasis))
+    for i in range(0,NOcc):
+        V[:,i] = A[:,i]
+
+    for j in range(NOcc,NBasis):
+        V[:,j] = B[:,j-NOcc]
+
+    return V
+
 
