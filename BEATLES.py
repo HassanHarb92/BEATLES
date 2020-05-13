@@ -453,7 +453,7 @@ def PrintSI(filename1,switch):
 
 def CalcNO(filename,NBasis):
        Palpha, Pbeta = MatGrab(filename,NBasis,2)   
-       C, a = MatGrab(filename,NBasis,1)
+       C = MatGrab(filename,NBasis,1)
        S = GetOverlap(C,NBasis)
        Svals, Svecs = np.linalg.eig(S)
        Sval_minhalf = (np.diag(Svals**(0.5)))
