@@ -1051,7 +1051,7 @@ def OVParse(A,NBasis,NOcc):
 
 def Biorthog(A,B,S,switch):                 # eqn numbers based on personal notes
    D = np.dot(np.transpose(B),np.dot(S,A))  # eq. 1
-   u, d, v  = np.linalg.svd(D)              # eq. 2
+   u, d, v  = np.linalg.svd(D,full_matrices=True)              # eq. 2
     
    DtD = np.dot(np.transpose(D),D)
    l, V = np.linalg.eig(DtD)
@@ -1065,7 +1065,7 @@ def Biorthog(A,B,S,switch):                 # eqn numbers based on personal note
       print "u = ", u
       print "v = ", v
    overlap =  np.linalg.det(u)*np.prod(d)*np.linalg.det(v)
-   return d, U, V, D
+   return d, u, v, D
 
 # PickColumn: Subroutine that selects a specific column from a two dimensional matrix (NBasis,NBasis), outputs an array (NBasis,1)
 # Input: A: Two dimensional matrix
