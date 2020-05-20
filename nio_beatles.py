@@ -2,12 +2,12 @@
 
 #######################################################################################################################
 #
-#  LennoNIO  v. 1.0
+#  NIOs  v. 1.0
 #  By Hassan Harb
 #  Program that reads in SCF Densities of ground and detached states and returns the eigenvalues and eigenvectors of
 #  natural ionization orbitals
 #
-#  usage: python nio.py ground.fchk detached.fchk
+#  usage: python nio_beatles.py ground.fchk detached.fchk
 #
 #  For more details, check: J. Chem. Phys., 144, 204117 (2016)
 #
@@ -191,5 +191,4 @@ for i in range(0,eigs_beta+1):
        print('{:<20d}{:^20.2f}{:^20.2f}{:^20.2f}'.format(i,eigs_beta_pop[j,0],eigs_beta_pop[j,1]*100,eigs_beta_pop[j,2]*100))
 print "\n"
 print "NIO Analysis done! To visualize the NIOs please open:", filename3
-#print "Notice: Listening to Lennon's song Imagine is highly recommended while visualizing the orbitals."
 
