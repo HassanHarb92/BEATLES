@@ -191,5 +191,4 @@ for i in range(0,eigs_beta+1):
        print('{:<20d}{:^20.2f}{:^20.2f}{:^20.2f}'.format(i,eigs_beta_pop[j,0],eigs_beta_pop[j,1]*100,eigs_beta_pop[j,2]*100))
 print "\n"
 print "NIO Analysis done! To visualize the NIOs please open:", filename3
-#print "Notice: Listening to Lennon's song Imagine is highly recommended while visualizing the orbitals."
 
