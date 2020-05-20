@@ -7,7 +7,7 @@
 #  Program that reads in SCF Densities of ground and detached states and returns the eigenvalues and eigenvectors of
 #  natural ionization orbitals
 #
-#  usage: python nio.py ground.fchk detached.fchk
+#  usage: python nio_beatles.py ground.fchk detached.fchk
 #
 #  For more details, check: J. Chem. Phys., 144, 204117 (2016)
 #
