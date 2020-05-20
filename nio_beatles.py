@@ -2,7 +2,11 @@
 
 #######################################################################################################################
 #
+<<<<<<< HEAD
 #  NIOs  v. 1.0
+=======
+#  NIO  v. 1.0
+>>>>>>> df6c43f0086aa19c9e540105494e6f59c81f7ad9
 #  By Hassan Harb
 #  Program that reads in SCF Densities of ground and detached states and returns the eigenvalues and eigenvectors of
 #  natural ionization orbitals
