@@ -1220,4 +1220,41 @@ def OVMerge(A,B,NOcc,NBasis):
 
     return V
 
+# Work in progress: Print Distance Matrix
+# DistanceMatrix: Calculates distances between all atoms in a molecule
+# Input         : fchk file name
+# 
+# Output        : Returns none, but prints distances between all atoms.
+#
+# Unfinished part: generate and return a distance matrix (NAtoms x NAtoms) 
+#
+
+def DistanceMatrix(filename):
+    NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy = NBasGrab(filename)
+    Atomic_Numbers = GetAtoms(filename,NAtoms)
+    Atomic_Symbol = [""]*NAtoms
+    for i in range(0,NAtoms):
+        Atomic_Symbol[i] = AtomicSymbol(int(Atomic_Numbers[i]))
+    RawCart = GeomGet(filename,NAtoms)
+    Cart = np.resize(RawCart,(NAtoms,3))
+    for i in range(0,NAtoms):
+        for j in range(i+1,NAtoms):
+           e2 = [Cart[j,0],Cart[j,1],Cart[j,2]]
+           e1 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           print "Distance ", Atomic_Symbol[i], "(",i+1,")","-",Atomic_Symbol[j],"(",j+1,") = " , np.around(DistAB(e1,e2),decimals=2), "Angstroms"
+
+
+# Work in progress: Basis set reader:
+
+def ReadBasisSet(filename):
+    NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy = NBasGrab(filename)
+    print "Number of Basis functions =", NBasis
+    print "Number of atoms =", NAtoms
+    Atomic_Numbers = GetAtoms(filename,NAtoms)
+    print "Atomic Numbers =", Atomic_Numbers
+    Atomic_Symbol = [""]*NAtoms
+    for i in range(0,NAtoms):
+        Atomic_Symbol[i] = AtomicSymbol(int(Atomic_Numbers[i]))
+    print "Atomic Symbols =", Atomic_Symbol
+    
 
