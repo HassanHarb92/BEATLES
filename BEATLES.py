@@ -218,9 +218,7 @@ def MatGrab(filename,NBasis,switch):
               if  "Beta MO coefficients" in line:
                     i=i+1
                     BMO=i
-#                    print "Beta MO coefficients starts at line :", i
                     j=i+MOlines-1
-#                    print "Beta MO coefficients ends at line :", j
                     for m in range(0,j-i+1):
                        nextline = origin.next()
                        nextline = nextline.split()
