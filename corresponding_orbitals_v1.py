@@ -17,20 +17,21 @@ NElec_1, NAlpha_1, NBeta_1 = NElec(filename1)
 
 print "------------------------------------- "
 print "Corresponding Orbitals"
-print "version 1.0"
+print "version 1.1"
 print "Hassan Harb & Hrant P. Hratchian"
 print "University of California, Merced"
-print "Last edited by Hassan Harb, May 19, 2020"
+print "Last edited by Hassan Harb, May 29, 2020"
 print "------------------------------------- \n"
 
-print "Notice: This version only works for singlet states!"
+print "Notice: This version works for both closed shell and open shell states"
+print "        The current version only works over occupied orbitals"
 print "Number of Basis functions =", NBasis
 print "Number of Alpha electrons =", NAlpha_1
 print "Number of Beta  electrons =", NBeta_1
 
-if (NAlpha_1 != NBeta_1):
-   print "Alpha and Beta electrons are not equal! Code will terminate."
-   exit()
+#if (NAlpha_1 != NBeta_1):
+#   print "Alpha and Beta electrons are not equal! Code will terminate."
+#   exit()
 
 Ca_1 = MatGrab(filename1,NBasis,1)
 Cb_1 = MatGrab(filename1,NBasis,-1)
@@ -55,19 +56,26 @@ Cb_1_V_Biorth = np.dot(Cb_1_V,U_VV)*np.linalg.det(np.transpose(U_VV))
 Ca_Biorth = OVMerge(Ca_1_O_Biorth,Ca_1_V_Biorth,NAlpha_1,NBasis)
 Cb_Biorth = OVMerge(Cb_1_O_Biorth,Cb_1_V_Biorth,NBeta_1,NBasis)
 
-Sigma_alpha = np.concatenate((Sigma_OO,Sigma_VV))
-Sigma_beta = np.concatenate((Sigma_OO,Sigma_VV))
+if (NAlpha_1 != NBeta_1):
+   Sigma_alpha_nulls = np.zeros(NAlpha_1-NBeta_1)
+   Sigma_alpha = np.concatenate((Sigma_OO,Sigma_alpha_nulls))
+   Sigma_alpha = np.concatenate((Sigma_alpha,Sigma_VV))
+   Sigma_beta = np.concatenate((Sigma_OO,Sigma_alpha_nulls))
+   Sigma_beta = np.concatenate((Sigma_beta,Sigma_VV))
+
+else:
+   Sigma_alpha = np.concatenate((Sigma_OO,Sigma_VV))
+   Sigma_beta = np.concatenate((Sigma_OO,Sigma_VV))
 
 array_alpha = np.zeros(NBasis)
 array_beta = np.zeros(NBasis)
 thresh_eigval = 0.01
 
-print "NBasis = ", NBasis
-
-for i in range (0,NBasis):
+for i in range (0,NAlpha_1):
     if (Sigma_alpha[i] < thresh_eigval):
        array_alpha[i] = 1
        print "Alpha orbital ", i+1, " has an overlap less than the threshold"
+for i in range (0,NBeta_1):
     if (Sigma_beta[i] < thresh_eigval):
        array_beta[i] = 1
        print "Beta orbital ", i+1, " has an overlap less than the threshold"
@@ -89,42 +97,21 @@ for i in range(0,NBasis):
        Cb_nulls[:,k] = Cb_Biorth[:,i]
        k = k + 1
 
+Sigma_alpha = np.sqrt(Sigma_alpha)
+Sigma_beta = np.sqrt(Sigma_beta)
 
-if (array_alpha_sum > 0):
-   Sigma_null, U_null, V_null, D_null = Biorthog(Ca_nulls,Cb_nulls,S,-1)
-   Sigma_null = np.sqrt(Sigma_null)
-   Sigma_alpha = np.sqrt(Sigma_alpha)
-   Sigma_beta = np.sqrt(Sigma_beta)
-
-   Ca_nulls = np.dot(Ca_nulls,np.transpose(V_null))*np.linalg.det(np.transpose(V_null))
-   Cb_nulls = np.dot(Cb_nulls,U_null)*np.linalg.det(np.transpose(U_null))
-
-   Ca_Biorth_final = np.zeros((NBasis,NBasis))
-   Cb_Biorth_final = np.zeros((NBasis,NBasis))
-
-   sigma_alpha_final = np.zeros(NBasis)
-   sigma_beta_final = np.zeros(NBasis)
-
-   p = 0
-   q = 0
-   for i in range(0,NBasis):
-       if (array_alpha[i] == 0):
-          Ca_Biorth_final[:,i] = Ca_Biorth[:,i]
-       else:
-          Ca_Biorth_final[:,i] = Ca_nulls[:,p]
-          p = p + 1
-
-       if (array_beta[i] == 0):
-          Cb_Biorth_final[:,i] = Cb_Biorth[:,i]
-       else:
-          Cb_Biorth_final[:,i] = Cb_nulls[:,q]
-          q = q+1
-else:
-   Ca_Biorth_final = Ca_Biorth
-   Cb_Biorth_final = Cb_Biorth
+Ca_Biorth_final = Ca_1
+Cb_Biorth_final = Cb_1
 
 sigma_alpha_final = Sigma_alpha
 sigma_beta_final = Sigma_beta
+
+for i in range(0,NAlpha_1):
+          Ca_Biorth_final[:,i] = Ca_Biorth[:,i]
+
+for i in range(0,NBeta_1):
+          Cb_Biorth_final[:,i] = Cb_Biorth[:,i]
+
 
 filename3 = "CorrespondingOrbitals-"+filename1
 
