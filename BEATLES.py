@@ -9,10 +9,13 @@ from numpy import genfromtxt
 import csv
 from decimal import Decimal
 import os
+import random
+from lyrics import *
 
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
+#          A tribute to the Beatles
 #
-#          Updated Apr 26, 2020  by Hassan Harb
+#          Updated May 30, 2020  by Hassan Harb
 #
 #          /     |    \
 #         /      |     \
@@ -21,7 +24,7 @@ import os
 #      /=/ \=/ \= / \=/ \=\
 #     / ==  ==  ==  ==  == \
 #    / ==   ==  ==  ==   == \ 
-#
+#     (The original Beatles)
 # (ASCII retrieved from https://www.asciiart.eu/music/musicians/beatles )
 #
 #########################################################################
@@ -1257,4 +1260,9 @@ def ReadBasisSet(filename):
         Atomic_Symbol[i] = AtomicSymbol(int(Atomic_Numbers[i]))
     print "Atomic Symbols =", Atomic_Symbol
     
+def PrintLyrics():
+    n = random.randint(1,13)
+    LyricsLibrary(n)
+
+
 
