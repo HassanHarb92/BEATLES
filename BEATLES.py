@@ -680,14 +680,6 @@ def CartoZmat(RawCart,NAtoms,AtomicNum,filename2,switch):
 #         -2 : Beta Fock Matrix
 #          3 : Dipole matrix elements (x,y,z) [IN PROGRESS]
 
-#def ERIRead(filename):
-#    print "Reading ERIs from Gaussian Matrix File"
-#    print "Subroutine can only read regular 2e integrals (NO RAFINETTI)" 
-#    with open(filename,'r') as origin:
-#        for i, line in enumerate(origin):
-#            if "Label REGULAR 2E INTEGRALS" in line:
-#                print "Found 2e integrals!"
-
 def MatGrab2(filename,NBasis,switch):
     print "Reading from Matrix file\n"
     if (switch == 1):
@@ -1080,8 +1072,11 @@ def PickColumn(A,NBasis,i):
     return A_Column
 
 # WriteMOs: Subroutine that replaces the MO coefficients and orbital energies in a fchk file
-# Input:    
+# Input:    Input filename, output filename, Orbital coefficient alpha, orbital coefficient beta, Orbtial energies alpha, orbital energies beta, number of basis functions 
+# 
+# Output:   None. New file will be generated (filename3) that has the new Orbital coefficients and energies
 #
+
 def WriteMOs(filename1,filename3,V1,V2,e1,e2,NBasis):
 
   MOlines = int(len(V1)/5) + 1
@@ -1219,7 +1214,6 @@ def OVMerge(A,B,NOcc,NBasis):
 
     return V
 
-# Work in progress: Print Distance Matrix
 # DistanceMatrix: Calculates distances between all atoms in a molecule
 # Input         : fchk file name
 # 
@@ -1244,10 +1238,22 @@ def DistanceMatrix(filename):
            Distance_Matrix[i,j] = np.around(DistAB(e1,e2),decimals=2)
            Distance_Matrix[j,i] = np.around(DistAB(e1,e2),decimals=2)
     return Distance_Matrix, Atomic_Symbol
+
+# PrintLyrics: A Function made just for fun, prints out a random quote from the Beatles songs
+# Input:       None, but reads in the lyrics.py library file (partially complete)
+#
+# Output:      None, prints lyrics.
+#
     
 def PrintLyrics():
     n = random.randint(1,13)
     LyricsLibrary(n)
+
+# GetAtomicWeights: Grabs the "real atomic weights" from the fchk file
+# Input:            filename, Number of Atoms
+# 
+# Output:           One dimensional array, AtomicWeight, of dimensions NAtoms.
+#
 
 def GetAtomicWeights(filename1,NAtoms):
    p = 0
