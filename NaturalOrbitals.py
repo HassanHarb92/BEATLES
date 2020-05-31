@@ -12,6 +12,13 @@ import os
 import random
 from BEATLES import *
 
+
+# Natural Orbitals Transformation
+#
+# Script that reads in the canonical orbitals from a formatted checkpoint file and performs the Lowding Natural orbital transformtion
+# outputs a new fchk file that can be opened to visualize the natural orbitals
+# 
+
 filename1 = sys.argv[1]
 filename3 = "NaturalOrbitals-"+filename1
 
