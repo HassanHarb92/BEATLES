@@ -1236,12 +1236,15 @@ def DistanceMatrix(filename):
         Atomic_Symbol[i] = AtomicSymbol(int(Atomic_Numbers[i]))
     RawCart = GeomGet(filename,NAtoms)
     Cart = np.resize(RawCart,(NAtoms,3))
+    Distance_Matrix = np.zeros((NAtoms,NAtoms))
     for i in range(0,NAtoms):
         for j in range(i+1,NAtoms):
            e2 = [Cart[j,0],Cart[j,1],Cart[j,2]]
            e1 = [Cart[i,0],Cart[i,1],Cart[i,2]]
+           Distance_Matrix[i,j] = np.around(DistAB(e1,e2),decimals=2)
+           Distance_Matrix[j,i] = np.around(DistAB(e1,e2),decimals=2)
            print "Distance ", Atomic_Symbol[i], "(",i+1,")","-",Atomic_Symbol[j],"(",j+1,") = " , np.around(DistAB(e1,e2),decimals=2), "Angstroms"
-
+    return Distance_Matrix 
 
 # Work in progress: Basis set reader:
 
