@@ -37,5 +37,8 @@ with open(SI_file, 'w') as output:
               output.write(inputfile.read())
          os.remove(SI_array[i])
 
+print "SI Data extracted and printed to ", SI_file
+
+PrintLyrics()
 
 

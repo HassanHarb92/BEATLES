@@ -19,12 +19,19 @@ from BEATLES import *
 # outputs a new fchk file that can be opened to visualize the natural orbitals
 # 
 
+print "----------------------------------"
+print "Natural Orbital transformation code"
+print "----------------------------------\n"
 filename1 = sys.argv[1]
 filename3 = "NaturalOrbitals-"+filename1
+
+print "Canonical Molecular orbitals read from file: ", filename1
 
 NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy = NBasGrab(filename1)
 NOvecsA, NOvecsB, NOvalsA, NOvalsB = CalcNO(filename1,NBasis)
 WriteMOs(filename1,filename3,NOvecsA,NOvecsB,NOvalsA,NOvalsB,NBasis) 
 
+print "Transformation done! To visualize the orbitals please open ", filename3
 
+PrintLyrics()
 

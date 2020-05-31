@@ -196,3 +196,7 @@ for i in range(0,eigs_beta+1):
 print "\n"
 print "NIO Analysis done! To visualize the NIOs please open:", filename3
 
+PrintLyrics()
+
+
+

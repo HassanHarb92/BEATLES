@@ -149,3 +149,6 @@ for i in range(0,NBeta_1+1):
          print('{:<20d}{:^20s}{:^20.2f}'.format(i,"Docc.",Sigma_beta[i-1]))
 
 print "\nCorresponding orbital analysis done! To visualize the orbitals please open", filename3,"\n"
+
+PrintLyrics()
+
