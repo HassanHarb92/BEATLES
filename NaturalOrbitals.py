@@ -15,7 +15,7 @@ from BEATLES import *
 
 # Natural Orbitals Transformation
 #
-# Script that reads in the canonical orbitals from a formatted checkpoint file and performs the Lowding Natural orbital transformtion
+# Script that reads in the canonical orbitals from a formatted checkpoint file and performs the Lowdin Natural orbital transformtion
 # outputs a new fchk file that can be opened to visualize the natural orbitals
 # 
 
