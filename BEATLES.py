@@ -465,10 +465,6 @@ def CalcNO(filename,NBasis):
        NOvalsB = NOvalsB.real 
        NOvecsA = NOvecsA.real
        NOvecsB = NOvecsB.real
-#       print "Alpha Natural Orbitals Eigenvectors =\n", NOvecsA
-#       print "Alpha Natural Orbitals Eigenvalues  =\n", NOvalsA
-#       print "Beta  Natural Orbitals Eigenvectors  =\n", NOvecsB
-#       print "Beta  Natural Orbitals Eigenvalues   =\n", NOvalsB
        return NOvecsA, NOvecsB, NOvalsA, NOvalsB
 
 # NElec: Reads in filename
