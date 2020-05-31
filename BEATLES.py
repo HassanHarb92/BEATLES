@@ -1223,7 +1223,7 @@ def OVMerge(A,B,NOcc,NBasis):
 # DistanceMatrix: Calculates distances between all atoms in a molecule
 # Input         : fchk file name
 # 
-# Output        : Returns none, but prints distances between all atoms.
+# Output        : Returns Distance Matrix and Atomic Symbol array.
 #
 # Unfinished part: generate and return a distance matrix (NAtoms x NAtoms) 
 #
@@ -1243,8 +1243,7 @@ def DistanceMatrix(filename):
            e1 = [Cart[i,0],Cart[i,1],Cart[i,2]]
            Distance_Matrix[i,j] = np.around(DistAB(e1,e2),decimals=2)
            Distance_Matrix[j,i] = np.around(DistAB(e1,e2),decimals=2)
-           print "Distance ", Atomic_Symbol[i], "(",i+1,")","-",Atomic_Symbol[j],"(",j+1,") = " , np.around(DistAB(e1,e2),decimals=2), "Angstroms"
-    return Distance_Matrix 
+    return Distance_Matrix, Atomic_Symbol
 
 # Work in progress: Basis set reader:
 
