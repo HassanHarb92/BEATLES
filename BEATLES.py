@@ -1244,6 +1244,36 @@ def DistanceMatrix(filename):
            Distance_Matrix[i,j] = np.around(DistAB(e1,e2),decimals=2)
            Distance_Matrix[j,i] = np.around(DistAB(e1,e2),decimals=2)
     return Distance_Matrix, Atomic_Symbol
+    
+def PrintLyrics():
+    n = random.randint(1,13)
+    LyricsLibrary(n)
+
+def GetAtomicWeights(filename1,NAtoms):
+   p = 0
+   r = 0
+   n = 1
+   AtomicWeight = np.zeros(NAtoms)
+   if (NAtoms%5 ==0):
+     n = 0
+   AtomLines = int(NAtoms/5) + n
+
+   with open(filename1,'r') as origin:
+      for i, line in enumerate(origin):
+         if "Real atomic weights" in line:
+            i = i + 1
+            pointer = i
+            endpointer = pointer + AtomLines -1
+            for m in range(0, endpointer - pointer + 1):
+                nextline = origin.next()
+                nextline = nextline.split()
+                for p in range(p,len(nextline)):
+                   AtomicWeight[r] = nextline[p]
+                   r = r + 1
+                p = 0
+   AtomicWeight = np.around(AtomicWeight,decimals=3)
+   return AtomicWeight
+
 
 # Work in progress: Basis set reader:
 
@@ -1257,10 +1287,5 @@ def ReadBasisSet(filename):
     for i in range(0,NAtoms):
         Atomic_Symbol[i] = AtomicSymbol(int(Atomic_Numbers[i]))
     print "Atomic Symbols =", Atomic_Symbol
-    
-def PrintLyrics():
-    n = random.randint(1,13)
-    LyricsLibrary(n)
-
 
 
