@@ -29,10 +29,6 @@ print "Number of Basis functions =", NBasis
 print "Number of Alpha electrons =", NAlpha_1
 print "Number of Beta  electrons =", NBeta_1
 
-#if (NAlpha_1 != NBeta_1):
-#   print "Alpha and Beta electrons are not equal! Code will terminate."
-#   exit()
-
 Ca_1 = MatGrab(filename1,NBasis,1)
 Cb_1 = MatGrab(filename1,NBasis,-1)
 
