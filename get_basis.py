@@ -16,7 +16,10 @@ import requests
 # Basis set exchange interface with BEATLES
 # Uses requests package (make sure to have it installed!)
 
+print "_____________________________________________________________"
 print "Get Basis Interface of the BEATLES v 0.1"
+print "Retrieves basis set information from www.BasisSetExchange.org"
+print "_____________________________________________________________"
 print "This is beta version."
 print "it can interface with www.basissetexchange.org but can't figure out what to do if basis set is misspelled/missing"
 print "Last updated by Hassan Harb, June 1, 2020"
@@ -61,6 +64,7 @@ if (r2.status_code != 200):
     print "ERROR, Basis set not found! Make sure you typed in the correct input."
     exit()
 
+filename = filename.replace(' ','-')
 filename = filename+'.bsf'
 
 with open (filename, 'w') as bsf:
