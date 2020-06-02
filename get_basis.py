@@ -25,6 +25,7 @@ print "it can interface with www.basissetexchange.org but can't figure out what 
 print "Last updated by Hassan Harb, June 1, 2020"
 print "NOTICE: Remember to add a backslash if the basisset has a special character, e.g. 6-311++G* should be called as 6-311++G\*"
 print"\n"
+
 arguments_length = len(sys.argv)
 arguments = []*(arguments_length - 2)
 
@@ -72,4 +73,5 @@ with open (filename, 'w') as bsf:
 
 print "Basis set written to file ", filename
 
+PrintLyrics()
 
