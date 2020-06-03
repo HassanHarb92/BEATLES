@@ -1246,7 +1246,7 @@ def DistanceMatrix(filename):
 #
     
 def PrintLyrics():
-    n = random.randint(1,13)
+    n = random.randint(1,32)
     LyricsLibrary(n)
 
 # GetAtomicWeights: Grabs the "real atomic weights" from the fchk file
@@ -1279,7 +1279,6 @@ def GetAtomicWeights(filename1,NAtoms):
                 p = 0
    AtomicWeight = np.around(AtomicWeight,decimals=3)
    return AtomicWeight
-
 
 # Work in progress: Basis set reader:
 
