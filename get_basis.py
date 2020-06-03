@@ -32,6 +32,8 @@ arguments = []*(arguments_length - 2)
 basis = sys.argv[1]
 formats = sys.argv[2]
 elements = '?elements='
+print "Number of elements", arguments_length -3
+element_list = [" "]*(arguments_length-3)
 
 filename = basis+'_'
 
@@ -39,27 +41,24 @@ for i in range (3,arguments_length):
    if (i < arguments_length-1):
          elements = elements+sys.argv[i]+','
          filename = filename+sys.argv[i]+'-'
+         element_list[i-3] = sys.argv[i]
    else:
          elements = elements+sys.argv[i]
          filename = filename+sys.argv[i]
+         element_list[i-3] = sys.argv[i]
 
-print "elements =", elements
+print "elements =", element_list
 print "Basis =", basis
 print "Format =", formats
 
 if (formats == 'Gaussian' or formats == 'GAUSSIAN' or formats == 'gaussian'):
     formats = 'gaussian94'
 
-print "Number of arguments =", arguments_length
-print "All Arguments =", arguments
-
 Base_URL = 'https://www.basissetexchange.org/api'
 
 full_path = Base_URL+'/basis/'+basis+'/format/'+formats+'/'+elements
 r2 = requests.get(full_path)
 basisset = r2.text
-
-print r2.status_code
 
 if (r2.status_code != 200):
     print "ERROR, Basis set not found! Make sure you typed in the correct input."
