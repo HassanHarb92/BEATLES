@@ -44,6 +44,7 @@ from lyrics import *
 def NBasGrab(filename):
   NBasis = 0  
   NElem = 0
+  SCFEnergy = 0.0
   Charge = 0
   Multiplicity = 0
   NAtoms = 0
