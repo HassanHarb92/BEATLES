@@ -30,7 +30,21 @@ print"\n"
 arguments_length = len(sys.argv)
 arguments = []*(arguments_length - 2)
 
+
 basis = sys.argv[1]
+
+if (sys.argv[2] == 'reference'):
+   print "Reference keyword found! Will retrieve references for " + basis
+   reference = requests.get('https://www.basissetexchange.org/api/references/'+basis+'/format/bib')
+   refbib = reference.text
+   bibfile = basis+'.bib'
+   with open (bibfile, 'w') as bibtexfile:
+        bibtexfile.write(refbib)
+   print "Reference added to "+bibfile
+   PrintLyrics()
+   exit()
+
+
 formats = sys.argv[2]
 elements = '?elements='
 print "Number of elements", arguments_length -3
@@ -58,10 +72,10 @@ if (formats == 'Gaussian' or formats == 'GAUSSIAN' or formats == 'gaussian'):
 Base_URL = 'https://www.basissetexchange.org/api'
 
 full_path = Base_URL+'/basis/'+basis+'/format/'+formats+'/'+elements +'&make_general=true'
-r2 = requests.get(full_path)
-basisset = r2.text
+basissetget = requests.get(full_path)
+basisset = basissetget.text
 
-if (r2.status_code != 200):
+if (basissetget.status_code != 200):
     print "ERROR, Basis set not found! Make sure you typed in the correct input."
     exit()
 
