@@ -12,7 +12,7 @@
 #
 #  For more details, check: J. Chem. Phys., 144, 204117 (2016)
 #
-#  Last edited by Hassan Harb, June 18, 2019
+#  Last edited by Hassan Harb, June 5, 2020
 #
 #######################################################################################################################
 
