@@ -44,6 +44,17 @@ if (sys.argv[2] == 'reference'):
    PrintLyrics()
    exit()
 
+if (sys.argv[2] == 'info'):
+   print "Info keyword found! Will retrieve info for " + basis
+   info = requests.get('https://www.basissetexchange.org/api/notes/'+basis)
+   infotext = info.text
+   infotext = infotext.encode('ascii', 'ignore')
+   infofile = 'info-'+basis+'.txt'
+   with open (infofile, 'w') as infotextfile:
+        infotextfile.write(infotext)
+   print "Info added to "+infofile
+   PrintLyrics()
+   exit()
 
 formats = sys.argv[2]
 elements = '?elements='
