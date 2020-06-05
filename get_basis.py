@@ -19,6 +19,7 @@ import requests
 print "_____________________________________________________________"
 print "Get Basis Interface of the BEATLES v 0.1"
 print "Retrieves basis set information from www.BasisSetExchange.org"
+print "\n A New Basis Set Exchange: An Open, Up-to-date Resource for the Molecular Sciences Community.\n Benjamin P. Pritchard, Doaa Altarawy, Brett Didier, Tara D. Gibson, Theresa L. Windus.\n J. Chem. Inf. Model. 2019, 59(11), 4814-4820"
 print "_____________________________________________________________"
 print "This is beta version."
 print "it can interface with www.basissetexchange.org but can't figure out what to do if basis set is misspelled/missing"
@@ -56,7 +57,7 @@ if (formats == 'Gaussian' or formats == 'GAUSSIAN' or formats == 'gaussian'):
 
 Base_URL = 'https://www.basissetexchange.org/api'
 
-full_path = Base_URL+'/basis/'+basis+'/format/'+formats+'/'+elements
+full_path = Base_URL+'/basis/'+basis+'/format/'+formats+'/'+elements +'&make_general=true'
 r2 = requests.get(full_path)
 basisset = r2.text
 
