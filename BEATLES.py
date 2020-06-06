@@ -466,6 +466,8 @@ def CalcNO(filename,NBasis):
        NOvalsB = NOvalsB.real 
        NOvecsA = NOvecsA.real
        NOvecsB = NOvecsB.real
+       NOvecsA = np.dot(np.linalg.inv(Shalf),NOvecsA)
+       NOvecsB = np.dot(np.linalg.inv(Shalf),NOvecsB)
        return NOvecsA, NOvecsB, NOvalsA, NOvalsB
 
 # NElec: Reads in filename
