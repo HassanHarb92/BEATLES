@@ -33,7 +33,7 @@ arguments = []*(arguments_length - 2)
 
 basis = sys.argv[1]
 
-if (sys.argv[2] == 'reference'):
+if (sys.argv[2] == 'reference' or sys.argv[2] == 'references'):
    print "Reference keyword found! Will retrieve references for " + basis
    reference = requests.get('https://www.basissetexchange.org/api/references/'+basis+'/format/bib')
    refbib = reference.text
