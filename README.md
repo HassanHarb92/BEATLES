@@ -1,6 +1,8 @@
 # BEATLES
 **BEATLES**: **B**undle of **E**ssential and **A**ssistive **T**ools **L**ibrary for **E**lectronic **S**tructure
 
+By Hassan Harb & Hrant P. Hratchian
+
 Python library that interfaces with Gaussian formatted checkpoint files and matrix files.
 
 For details about the available functions, please check the descriptions in the BEATLES.py file.
