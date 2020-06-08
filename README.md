@@ -29,3 +29,12 @@ Several applications to the BEATLES library are also available here:
    usage: python Distances.py molecule.fchk
    
 **Fun Part**: Everytime you write a code that uses BEATLES.py, make sure to end it with PrintLyrics() to print a random quote from the Beatles when the code runs.
+
+
+**References**
+1. J. Chem. Phys. 144, 204117 (2016); DOI: 10.1063/1.4951738 
+2. J. Phys. Chem. Solids 65, 781 (2004). DOI: 10.1016/j.jpcs.2003.11.015
+3. Proc. R. Soc. London, Ser. A 263, 483-493 (1961). Online at https://www.jstor.org/stable/2414327
+4. J. Chem. Phys. 47, 1936 (1967); DOI: 10.1063/1.1712221
+5. Phys. Rev. 101, 1730; DOI: 10.1103/PhysRev.101.1730
+
