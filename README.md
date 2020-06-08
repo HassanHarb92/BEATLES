@@ -16,7 +16,7 @@ Several applications to the BEATLES library are also available here:
 3. Supporting Information Generator: **SI_Generator.py**
    usage: python SI_Generator.py outputfile.txt file1.fchk file2.fchk ....
    
-4. Get Basis sets from www.basisssetexchange.org: **get_basis**
+4. Get Basis sets from www.basissetexchange.org: **get_basis**
    usage: python get_basis.py basisset format element1 element2 ...
    
 5. Natural Orbitals Transformation: **NaturalOrbitals.py**
@@ -37,4 +37,5 @@ Several applications to the BEATLES library are also available here:
 3. Proc. R. Soc. London, Ser. A 263, 483-493 (1961). Online at https://www.jstor.org/stable/2414327
 4. J. Chem. Phys. 47, 1936 (1967); DOI: 10.1063/1.1712221
 5. Phys. Rev. 101, 1730; DOI: 10.1103/PhysRev.101.1730
+6. J. Chem. Inf. Model. 2019, 59(11), 4814-4820, doi:10.1021/acs.jcim.9b00725.
 
