@@ -8,6 +8,7 @@ For details about the available functions, please check the descriptions in the 
 Several applications to the BEATLES library are also available here:
 
 1. Natural Ionization Orbitals analysis **nio_beatles.py** 
+   
    usage: python nio_beatles.py ground_state.fchk detached_state.fchk
    
 2. Corresponding Orbitals analysis **corresponding_orbtials_v1.py**
