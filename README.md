@@ -12,11 +12,11 @@ For details about the available functions, please check the descriptions in the 
 
 Several applications to the BEATLES library are also available here:
 
-1. Natural Ionization Orbitals analysis **nio_beatles.py** 
+1. Natural Ionization Orbitals analysis: **nio_beatles.py** 
    
    usage: ```python nio_beatles.py ground_state.fchk detached_state.fchk```
    
-2. Corresponding Orbitals analysis **corresponding_orbtials_v1.py**
+2. Corresponding Orbitals analysis: **corresponding_orbtials_v1.py**
    
    usage: ```python corresponding_orbtials_v1.py molecule.fchk```
    
@@ -24,7 +24,7 @@ Several applications to the BEATLES library are also available here:
    
    usage: ```python SI_Generator.py outputfile.txt file1.fchk file2.fchk ....```
    
-4. Get Basis sets from www.basissetexchange.org: **get_basis**
+4. Get Basis sets from www.basissetexchange.org: **get_basis.py**
    
    usage: ```python get_basis.py basisset format element1 element2 ...```
    
