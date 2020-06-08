@@ -34,6 +34,7 @@ from lyrics import *
 #          -Charge
 #          -Multiplicity
 #          -Number of Atoms
+#          -Cartesian Coordinates
 #          -Atomic Symbols
 #          -SCF Energy 
 #          -Total Energy (needs to be added)
