@@ -1297,3 +1297,124 @@ def ReadBasisSet(filename):
     print "Atomic Symbols =", Atomic_Symbol
 
 
+# WriteMOsQChem: Subroutine that replaces the MO coefficients and orbital energies in a fchk file (QChem Version)
+# Input:         Input filename, output filename, Orbital coefficient alpha, orbital coefficient beta, Orbtial energies alpha, orbital energies beta, number of basis functions 
+# 
+# Output:        None. New file will be generated (filename3) that has the new Orbital coefficients and energies
+#
+
+def WriteMOsQChem(filename1,filename3,V1,V2,e1,e2,NBasis):
+
+  MOlines = int(len(V1)/5) + 1
+  p = 0
+  r = 0
+  with open(filename1,'r') as origin:
+      for i, line  in enumerate(origin):
+          if "Alpha Orbital Energies" in line:
+                AOE = i+1
+                AOE_header = line
+          if  "Alpha MO coefficients" in line:
+                AMO = i+1
+                AMO_header = line
+          if "Beta Orbital Energies" in line:
+                BOE = i+1
+                BOE_header = line
+          if "Beta MO coefficients" in line:
+                BMO = i+1
+                BMO_header = line
+
+  print "Alpha MO Coefficients at line", AMO
+  print "Beta MO Coefficients at line", BMO
+  print "Alpha Orbital Energies at line", AOE
+  print "Beta Orbital Energies at line", BOE
+
+  pointer=0
+  counter=1
+
+  Start_point = min(AMO,BMO,AOE,BOE)
+  print "Start point = ", Start_point
+
+  with open(filename1,'r') as origin:
+    data = origin.readlines()
+    with open(filename3,'w') as f2:
+  
+        print "Writing results to new output file: ", filename3, " ... "
+  
+        while (pointer < Start_point-1):
+           f2.write(data[pointer])
+           pointer = pointer+1
+        print "pointer at line = ", pointer
+        f2.write(AOE_header)
+        for j in range(0,NBasis):
+            f2.write(" ")
+            if (e1[j] >= 0):
+               f2.write(" ")
+            f2.write(str(fchk_notation(e1[j].real)))
+            if (counter%5 == 0):
+                f2.write("\n")
+                counter=0
+            counter=counter+1
+        counter =1      
+        BOE = AOE + (int(NBasis/5)+2)
+        if (NBasis%5 != 0):
+            f2.write("\n")
+        if (NBasis%5 == 0):
+            BOE = BOE - 1 
+        f2.write(BOE_header)
+#        f2.write("Beta Orbital Energies\n")
+        for j in range(0,NBasis):
+            f2.write(" ")
+            if (e2[j] >= 0):
+               f2.write(" ")
+            f2.write(str(fchk_notation(e2[j].real)))
+            if (counter%5 ==0):
+                f2.write("\n")
+                counter=0
+            counter = counter+1
+        counter =1
+        AMO = BOE + (int(NBasis/5)+2)
+        if (NBasis%5 != 0):
+            f2.write("\n")
+        if (NBasis%5 == 0):
+            AMO = AMO - 1
+#        f2.write("Alpha MO coefficients\n")
+        f2.write(AMO_header)
+        for i in range(0,NBasis):
+            for j in range(0,NBasis):
+                 f2.write(" ")
+                 if (V1[j,i] >= 0):
+                    f2.write(" ")
+                 f2.write(str(fchk_notation(V1[j,i].real)))
+                 if (counter%5 ==0):
+                     f2.write("\n")
+                     counter=0
+                 counter = counter + 1
+        counter = 1
+        BMO = AMO + (int(NBasis*NBasis/5))+2
+        if (NBasis%5 != 0):
+            f2.write("\n")
+        if (NBasis%5 == 0):
+            BMO = BMO - 1
+#        f2.write("Beta MO Coefficients\n")
+        f2.write(BMO_header)
+#        f2.write(data[BMO])
+        for i in range(0,NBasis):
+               for j in range(0,NBasis):
+                    f2.write(" ")
+                    if (V2[j,i] >= 0):
+                       f2.write(" ")
+                    f2.write(str(fchk_notation(V2[j,i].real)))
+                    if (counter%5 ==0):
+                        f2.write("\n")
+                        counter=0
+                    counter = counter + 1
+        counter = 1
+        if (NBasis%5 != 0):
+           f2.write("\n")
+        pointer = BMO + (int(NBasis*NBasis/5))+2
+#        while (pointer < len(data)):
+#           f2.write(data[pointer])
+#           pointer = pointer+1
+  print "Done."    
+
+
