@@ -15,7 +15,7 @@ from lyrics import *
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
 #          A tribute to the Beatles
 #
-#          Updated May 30, 2020  by Hassan Harb
+#          Updated June 11, 2020  by Hassan Harb
 #
 #          /     |    \
 #         /      |     \
