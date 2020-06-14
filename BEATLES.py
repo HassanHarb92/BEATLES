@@ -15,7 +15,7 @@ from lyrics import *
 # BEATLES: Bundle of Essential and Assistive Tools Library for Electronic Structure
 #          A tribute to the Beatles
 #
-#          Updated June 11, 2020  by Hassan Harb
+#          Updated June 14, 2020  by Hassan Harb
 #
 #          /     |    \
 #         /      |     \
@@ -1283,19 +1283,6 @@ def GetAtomicWeights(filename1,NAtoms):
    AtomicWeight = np.around(AtomicWeight,decimals=3)
    return AtomicWeight
 
-# Work in progress: Basis set reader:
-
-def ReadBasisSet(filename):
-    NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy = NBasGrab(filename)
-    print "Number of Basis functions =", NBasis
-    print "Number of atoms =", NAtoms
-    Atomic_Numbers = GetAtoms(filename,NAtoms)
-    print "Atomic Numbers =", Atomic_Numbers
-    Atomic_Symbol = [""]*NAtoms
-    for i in range(0,NAtoms):
-        Atomic_Symbol[i] = AtomicSymbol(int(Atomic_Numbers[i]))
-    print "Atomic Symbols =", Atomic_Symbol
-
 
 # WriteMOsQChem: Subroutine that replaces the MO coefficients and orbital energies in a fchk file (QChem Version)
 # Input:         Input filename, output filename, Orbital coefficient alpha, orbital coefficient beta, Orbtial energies alpha, orbital energies beta, number of basis functions 
@@ -1410,5 +1397,18 @@ def WriteMOsQChem(filename1,filename3,V1,V2,e1,e2,NBasis):
 #           f2.write(data[pointer])
 #           pointer = pointer+1
   print "Done."    
+
+# Work in progress: Basis set reader:
+
+def ReadBasisSet(filename):
+    NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy = NBasGrab(filename)
+    print "Number of Basis functions =", NBasis
+    print "Number of atoms =", NAtoms
+    Atomic_Numbers = GetAtoms(filename,NAtoms)
+    print "Atomic Numbers =", Atomic_Numbers
+    Atomic_Symbol = [""]*NAtoms
+    for i in range(0,NAtoms):
+        Atomic_Symbol[i] = AtomicSymbol(int(Atomic_Numbers[i]))
+    print "Atomic Symbols =", Atomic_Symbol
 
 
