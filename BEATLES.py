@@ -1323,16 +1323,10 @@ def WriteMOsQChem(filename1,filename3,V1,V2,e1,e2,NBasis):
                 BMO = i+1
                 BMO_header = line
 
-  print "Alpha MO Coefficients at line", AMO
-  print "Beta MO Coefficients at line", BMO
-  print "Alpha Orbital Energies at line", AOE
-  print "Beta Orbital Energies at line", BOE
-
   pointer=0
   counter=1
 
   Start_point = min(AMO,BMO,AOE,BOE)
-  print "Start point = ", Start_point
 
   with open(filename1,'r') as origin:
     data = origin.readlines()
