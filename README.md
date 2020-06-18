@@ -1,6 +1,8 @@
 # BEATLES
 **BEATLES**: **B**undle of **E**ssential and **A**ssistive **T**ools **L**ibrary for **E**lectronic **S**tructure
 
+*A tribute to the Beatles Band*
+
  Hassan Harb & Hrant P. Hratchian
 
 ---
