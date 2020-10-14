@@ -279,3 +279,5 @@ print "\n\nNIO Analysis done! To visualize the NIOs please open:", filename3
 
 #WriteMOs(filename1,filename4,V1,V2,e1,e2,NBasis)
 
+PrintLyrics()
+
