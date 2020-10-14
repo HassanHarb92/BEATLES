@@ -2,16 +2,16 @@
 
 #######################################################################################################################
 #
-#  LennoNIO  v. 1.0
+#  NIO  v. 1.0
 #  By Hassan Harb
 #  Program that reads in SCF Densities of ground and detached states and returns the eigenvalues and eigenvectors of
-#  natural ionization orbitals
+#  natural ionization orbitals in addition to pole strengths.
 #
 #  usage: python nio.py ground.fchk detached.fchk
 #
 #  For more details, check: J. Chem. Phys., 144, 204117 (2016)
 #
-#  Last edited by Hassan Harb, June 18, 2019
+#  Last edited by Hassan Harb, October 14, 2020.
 #
 #######################################################################################################################
 
@@ -79,14 +79,14 @@ acc = 8 #accuracy to the acc's decimal place
 minEigVal = 0.1
 
 print "------------------------------------- "
-print "LennoNIO"
+print "Natural Ionization Orbitals"
 print "Hassan Harb & Hrant P. Hratchian"
 print "University of California, Merced"
 print "To cite this program, please use the following DOI: "
 print "------------------------------------- \n"
 
 
-print "lennoNIO: Calculates the density difference between two checkpoint files.\n"
+print "NIO: Calculates the density difference between two checkpoint files.\n"
 print "Checkpoint 1:", filename1
 print "Checkpoint 2:", filename2
 
