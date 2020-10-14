@@ -77,7 +77,7 @@ filename1 = sys.argv[1]
 filename2 = sys.argv[2]
 filename3 = "NIO-"+filename1
 acc = 8 #accuracy to the acc's decimal place
-minEigVal = 0.15
+minEigVal = 0.1
 
 print "------------------------------------- "
 print "Natural Ionization Orbitals"
