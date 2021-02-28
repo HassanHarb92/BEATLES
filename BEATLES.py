@@ -801,9 +801,9 @@ def MatGrab2(filename,NBasis,switch):
         return FockRawB
 
     if (switch == 3):
-       print "Reading Dipole integrals, matrix x\n"
+#       print "Reading Dipole integrals, matrix x\n"
        NElements = int(NBasis*(NBasis +1)/2)
-       print "Looking for ", NElements, " elements of the Dipole integrals matrix x\n"
+#       print "Looking for ", NElements, " elements of the Dipole integrals matrix x\n"
        DipX_Raw = np.zeros(NElements)
        p = 0
        n = 0
@@ -814,7 +814,7 @@ def MatGrab2(filename,NBasis,switch):
                    while (p < NElements):
                      NLines = NBasis - 5*r
                      if (NLines < 0):
-                        print "Done reading Dipole X matrix\n"
+#                        print "Done reading Dipole X matrix\n"
                      j = i+3
                      i = i + 4
                      end = j + NLines -1
@@ -828,9 +828,9 @@ def MatGrab2(filename,NBasis,switch):
                              p = p + 1
                      r = r + 1
                      i = m - 2
-       print "Dip X raw = ", DipX_Raw
+#       print "Dip X raw = ", DipX_Raw
 
-       print "Reading Dipole integrals, matrix y\n"
+#       print "Reading Dipole integrals, matrix y\n"
        NElements = int(NBasis*(NBasis +1)/2)
        print "Looking for ", NElements, " elements of the Dipole integrals matrix y\n"
        DipY_Raw = np.zeros(NElements)
@@ -843,7 +843,7 @@ def MatGrab2(filename,NBasis,switch):
                    while (p < NElements):
                      NLines = NBasis - 5*r
                      if (NLines < 0):
-                        print "Done reading Dipole Y matrix\n"
+#                        print "Done reading Dipole Y matrix\n"
                      j = i+3
                      i = i + 4
                      end = j + NLines -1
@@ -857,9 +857,9 @@ def MatGrab2(filename,NBasis,switch):
                              p = p + 1
                      r = r + 1
                      i = m - 2
-       print "Dip Y raw = ", DipY_Raw                  
+#       print "Dip Y raw = ", DipY_Raw                  
 
-       print "Looking for ", NElements, " elements of the Dipole integrals matrix z\n"
+ #      print "Looking for ", NElements, " elements of the Dipole integrals matrix z\n"
        DipZ_Raw = np.zeros(NElements)
        p = 0
        n = 0
@@ -884,7 +884,7 @@ def MatGrab2(filename,NBasis,switch):
                              p = p + 1
                      r = r + 1
                      i = m - 2
-       print "Dip Z raw = ", DipZ_Raw
+ #      print "Dip Z raw = ", DipZ_Raw
        return symmetrizeMat(DipX_Raw), symmetrizeMat(DipY_Raw), symmetrizeMat(DipZ_Raw)
 
 
