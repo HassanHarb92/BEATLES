@@ -1398,6 +1398,19 @@ def WriteMOsQChem(filename1,filename3,V1,V2,e1,e2,NBasis):
 #           pointer = pointer+1
   print "Done."    
 
+# ContractMat: Subroutine that reads in two square matrices (NBasis x NBasis) and returns their contraction (scalar)
+# Input:       Matrices A and B (dimensions: NBasis x NBasis), NBasis
+#
+# Output:      scalar m = Sum_(mu,nu) A_(mu,nu) * B_(mu,nu)
+#
+
+def ContractMat(A,B,NBasis):
+    value = 0.0
+    for i in range(0,NBasis):
+      for j in range(0,NBasis):
+        value = value + A[i,j]*B[i,j]
+    return value
+
 # Work in progress: Basis set reader:
 
 def ReadBasisSet(filename):
