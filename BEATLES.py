@@ -813,7 +813,7 @@ def MatGrab2(filename,NBasis,switch):
                 if " DIPOLE INTEGRALS, matrix     1" in line:
                    while (p < NElements):
                      NLines = NBasis - 5*r
-                     if (NLines < 0):
+                     #if (NLines < 0):
 #                        print "Done reading Dipole X matrix\n"
                      j = i+3
                      i = i + 4
@@ -842,7 +842,7 @@ def MatGrab2(filename,NBasis,switch):
                 if " DIPOLE INTEGRALS, matrix     2" in line:
                    while (p < NElements):
                      NLines = NBasis - 5*r
-                     if (NLines < 0):
+                     #if (NLines < 0):
 #                        print "Done reading Dipole Y matrix\n"
                      j = i+3
                      i = i + 4
