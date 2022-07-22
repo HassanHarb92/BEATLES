@@ -95,6 +95,36 @@ def NBasGrab(filename):
 #  print "Charge (subroutine) = ", Charge, "\n"
   return NBasis, NElem, Charge, Multiplicity, NAtoms, SCFEnergy
 
+# EXPERIMETNAL PART DONT USE TOO MUCH
+# Replace NBasis with NBasUse
+
+def ifNBasUse(filename):
+  NBasis = 0
+  NBasUse = 0
+  with open(filename, 'r') as origin:
+     for line in origin:
+        if "Number of basis functions" in line:
+           words = line.split()
+           for i in words:
+              for letter in i:
+                 if(letter.isdigit()):
+                    NBasis = NBasis*10 + int(letter)
+
+        if "Number of independent functions" in line:
+           words = line.split()
+           for i in words:
+              for letter in i:
+                 if(letter.isdigit()):
+                    NBasUse = NBasUse*10 + int(letter)
+  if (NBasis != NBasUse):
+     print "Linear Dependencies, proceed with caution!"  
+
+  return NBasis, NBasUse
+
+# END OF EXPERIMENTAL PART
+
+
+
 # GeomGet: reads in the file name, number of atoms
 # Output: -One dimensional vector (NAtoms * 3) that includes the cartesian coordinates of each atom
 #
