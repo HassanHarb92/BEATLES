@@ -1222,9 +1222,14 @@ def WriteMOs(filename1,filename3,V1,V2,e1,e2,NBasis):
                         counter=0
                     counter = counter + 1
         counter = 1
+## HASSAN july 2022: BUGGGGGGGGGGGGGGGGG
+
         if (NBasis%5 != 0):
            f2.write("\n")
-        pointer = BMO + (int(NBasis*NBasis/5))+2
+           pointer = BMO + (int(NBasis*NBasis/5))+2
+        if (NBasis%5 == 0):
+           pointer = BMO + (int(NBasis*NBasis/5))+2-1
+      
         while (pointer < len(data)):
            f2.write(data[pointer])
            pointer = pointer+1
